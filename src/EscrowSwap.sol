@@ -70,5 +70,11 @@ contract EscrowSwap {
         if (settled) revert AlreadySettled();
         if (!(depositedA && depositedB)) revert NotReady();
         settled = true;
+
+        // pay out from escrow to each counterparty
+        require(tokenA.transfer(bob, amountA), "payA");
+        require(tokenB.transfer(alice, amountB), "payB");
+
+        emit Settled(alice, bob);
     }
 }

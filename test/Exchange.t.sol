@@ -2,8 +2,8 @@
 pragma solidity ^0.8.24;
 
 import {Test, console2} from "forge-std/Test.sol";
-import "../src/EscrowSwap.sol";
-import "../src/SimpleToken.sol";
+import {EscrowSwap, IERC20} from "../src/EscrowSwap.sol";
+import {SimpleToken} from "../src/SimpleToken.sol";
 
 contract ExchangeTest is Test {
     address alice;
@@ -56,19 +56,40 @@ contract ExchangeTest is Test {
         vm.prank(bob);
         tokenB.approve(address(swap), amountB);
 
-        // Deposits (order doesn't matter)
+        // Before deposits
+        assertEq(tokenA.balanceOf(address(swap)), 0, "escrow A pre");
+        assertEq(tokenB.balanceOf(address(swap)), 0, "escrow B pre");
+
+        // Deposits
         vm.prank(alice);
         swap.depositA();
+        assertEq(
+            tokenA.balanceOf(address(swap)),
+            amountA,
+            "escrow A after Alice deposit"
+        );
+
         vm.prank(bob);
         swap.depositB();
+        assertEq(
+            tokenB.balanceOf(address(swap)),
+            amountB,
+            "escrow B after Bob deposit"
+        );
 
-        // Anyone can settle once both are in
+        // Inspect before settle
+        console2.log("escrow A:", tokenA.balanceOf(address(swap)));
+        console2.log("escrow B:", tokenB.balanceOf(address(swap)));
+
+        // Settle
         swap.settle();
 
-        // Post-conditions
+        // Final checks + logs
         assertEq(tokenA.balanceOf(bob), amountA, "bob got A");
         assertEq(tokenB.balanceOf(alice), amountB, "alice got B");
         assertEq(tokenA.balanceOf(address(swap)), 0, "escrow A empty");
         assertEq(tokenB.balanceOf(address(swap)), 0, "escrow B empty");
+        console2.log("alice TKB:", tokenB.balanceOf(alice));
+        console2.log("bob   TKA:", tokenA.balanceOf(bob));
     }
 }
