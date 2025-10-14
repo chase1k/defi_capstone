@@ -1,60 +1,57 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "./Factory.sol";
-import "./SimplePair.sol";
+import "./interfaces/IUniswapV2Router.sol";
+import "./interfaces/IUniswapV2Factory.sol";
+import "./interfaces/IUniswapV2Pair.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract Router {
-    address public factory;
+contract Router is IUniswapV2Router {
+    IUniswapV2Factory public factory;
 
     constructor(address _factory) {
-        factory = _factory;
+        factory = IUniswapV2Factory(_factory);
     }
 
-    // add liquidity: caller must approve tokens to router
-    function addLiquidity(address tokenA, address tokenB, uint amountA, uint amountB, address to) external {
-        address pair = Factory(factory).getPair(tokenA, tokenB);
-        require(pair != address(0), "PAIR_NOT_EXISTS");
+    function addLiquidity(
+        address tokenA,
+        address tokenB,
+        uint amountA,
+        uint amountB,
+        address to
+    ) external override returns (uint liquidity) {
+        address pair = factory.getPair(tokenA, tokenB);
+        if (pair == address(0)) pair = factory.createPair(tokenA, tokenB);
 
+        // pull tokens from user
         IERC20(tokenA).transferFrom(msg.sender, pair, amountA);
         IERC20(tokenB).transferFrom(msg.sender, pair, amountB);
-        SimplePair(pair).mint(to);
+
+        liquidity = IUniswapV2Pair(pair).mint(to);
     }
 
-    // swap exact input: swap tokenA -> tokenB using pair
-    function swapExactTokensForTokens(address tokenIn, address tokenOut, uint amountIn, address to) external {
-        address pair = Factory(factory).getPair(tokenIn, tokenOut);
-        require(pair != address(0), "PAIR_NOT_EXISTS");
+    function swapExactTokensForTokens(
+        uint amountIn,
+        uint amountOutMin,
+        address tokenA,
+        address tokenB,
+        address to
+    ) external override returns (uint amountOut) {
+        address pair = factory.getPair(tokenA, tokenB);
+        require(pair != address(0), "PAIR_DOES_NOT_EXIST");
 
-        // transfer tokenIn to pair
-        IERC20(tokenIn).transferFrom(msg.sender, pair, amountIn);
+        // pull tokens from user
+        IERC20(tokenA).transferFrom(msg.sender, pair, amountIn);
 
-        // compute reserves and do simple output calculation using constant product (no fees)
-        (uint112 reserve0, uint112 reserve1) = SimplePair(pair).getReserves();
-        (address token0, ) = (SimplePair(pair).token0(), SimplePair(pair).token1());
-        uint balance0 = IERC20(token0).balanceOf(pair);
-        uint balance1 = IERC20(SimplePair(pair).token1()).balanceOf(pair);
-
-        // determine amounts after input:
-        // If tokenIn == token0 then amount0In = amountIn and compute amount1Out:
-        if (tokenIn == token0) {
-            uint amount0In = amountIn;
-            uint newBalance0 = balance0;
-            uint k = uint(reserve0) * uint(reserve1);
-            // newBalance1 = k / newBalance0;
-            uint newBalance1 = k / newBalance0;
-            require(newBalance1 < balance1, "NO_OUTPUT");
-            uint amount1Out = balance1 - newBalance1;
-            SimplePair(pair).swap(0, amount1Out, to);
+        (uint112 reserve0, uint112 reserve1) = IUniswapV2Pair(pair).getReserves();
+        if (tokenA < tokenB) {
+            amountOut = (amountIn * reserve1) / reserve0;
+            require(amountOut >= amountOutMin, "INSUFFICIENT_OUTPUT");
+            IUniswapV2Pair(pair).swap(0, amountOut, to);
         } else {
-            uint amount1In = amountIn;
-            uint newBalance1 = balance1;
-            uint k = uint(reserve0) * uint(reserve1);
-            uint newBalance0 = k / newBalance1;
-            require(newBalance0 < balance0, "NO_OUTPUT");
-            uint amount0Out = balance0 - newBalance0;
-            SimplePair(pair).swap(amount0Out, 0, to);
+            amountOut = (amountIn * reserve0) / reserve1;
+            require(amountOut >= amountOutMin, "INSUFFICIENT_OUTPUT");
+            IUniswapV2Pair(pair).swap(amountOut, 0, to);
         }
     }
 }
