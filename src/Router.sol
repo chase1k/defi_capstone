@@ -13,13 +13,11 @@ contract Router is IUniswapV2Router {
         factory = IUniswapV2Factory(_factory);
     }
 
-    function addLiquidity(
-        address tokenA,
-        address tokenB,
-        uint amountA,
-        uint amountB,
-        address to
-    ) external override returns (uint liquidity) {
+    function addLiquidity(address tokenA, address tokenB, uint256 amountA, uint256 amountB, address to)
+        external
+        override
+        returns (uint256 liquidity)
+    {
         address pair = factory.getPair(tokenA, tokenB);
         if (pair == address(0)) pair = factory.createPair(tokenA, tokenB);
 
@@ -31,12 +29,12 @@ contract Router is IUniswapV2Router {
     }
 
     function swapExactTokensForTokens(
-        uint amountIn,
-        uint amountOutMin,
+        uint256 amountIn,
+        uint256 amountOutMin,
         address tokenA,
         address tokenB,
         address to
-    ) external override returns (uint amountOut) {
+    ) external override returns (uint256 amountOut) {
         address pair = factory.getPair(tokenA, tokenB);
         require(pair != address(0), "PAIR_DOES_NOT_EXIST");
 
@@ -55,4 +53,3 @@ contract Router is IUniswapV2Router {
         }
     }
 }
-

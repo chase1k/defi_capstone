@@ -15,14 +15,14 @@ contract ExchangeTest is Test {
     Router router;
 
     address alice = address(0xA1);
-    address bob   = address(0xB1);
+    address bob = address(0xB1);
 
     function setUp() public {
         tokenA = new ERC20Mint("Token A", "TKA");
         tokenB = new ERC20Mint("Token B", "TKB");
 
         factory = new Factory();
-        router  = new Router(address(factory));
+        router = new Router(address(factory));
     }
 
     function testMintApproveAddLiquidityAndSwap() public {
@@ -39,7 +39,7 @@ contract ExchangeTest is Test {
 
         // Add liquidity
         vm.prank(alice);
-        uint liquidity = router.addLiquidity(address(tokenA), address(tokenB), 500 ether, 500 ether, alice);
+        uint256 liquidity = router.addLiquidity(address(tokenA), address(tokenB), 500 ether, 500 ether, alice);
         assertGt(liquidity, 0);
 
         // Bob approves router
@@ -48,8 +48,7 @@ contract ExchangeTest is Test {
 
         // Swap
         vm.prank(bob);
-        uint amountOut = router.swapExactTokensForTokens(10 ether, 0, address(tokenA), address(tokenB), bob);
+        uint256 amountOut = router.swapExactTokensForTokens(10 ether, 0, address(tokenA), address(tokenB), bob);
         assertGt(tokenB.balanceOf(bob), 0);
     }
 }
-

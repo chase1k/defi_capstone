@@ -11,7 +11,7 @@ contract Pair is ERC20, IUniswapV2Pair {
     uint112 private reserve0;
     uint112 private reserve1;
 
-    uint constant public MINIMUM_LIQUIDITY = 1000;
+    uint256 public constant MINIMUM_LIQUIDITY = 1000;
 
     constructor(address _token0, address _token1) ERC20("LP Token", "LP") {
         token0 = _token0;
@@ -22,9 +22,9 @@ contract Pair is ERC20, IUniswapV2Pair {
         return (reserve0, reserve1);
     }
 
-    function mint(address to) external override returns (uint liquidity) {
-        uint bal0 = ERC20(token0).balanceOf(address(this)) - reserve0;
-        uint bal1 = ERC20(token1).balanceOf(address(this)) - reserve1;
+    function mint(address to) external override returns (uint256 liquidity) {
+        uint256 bal0 = ERC20(token0).balanceOf(address(this)) - reserve0;
+        uint256 bal1 = ERC20(token1).balanceOf(address(this)) - reserve1;
 
         if (totalSupply() == 0) {
             liquidity = sqrt(bal0 * bal1) - MINIMUM_LIQUIDITY;
@@ -40,7 +40,7 @@ contract Pair is ERC20, IUniswapV2Pair {
         reserve1 = uint112(ERC20(token1).balanceOf(address(this)));
     }
 
-    function burn(address to) external override returns (uint amount0, uint amount1) {
+    function burn(address to) external override returns (uint256 amount0, uint256 amount1) {
         amount0 = reserve0 / 2;
         amount1 = reserve1 / 2;
 
@@ -53,7 +53,7 @@ contract Pair is ERC20, IUniswapV2Pair {
         reserve1 -= uint112(amount1);
     }
 
-    function swap(uint amount0Out, uint amount1Out, address to) external override {
+    function swap(uint256 amount0Out, uint256 amount1Out, address to) external override {
         require(amount0Out > 0 || amount1Out > 0, "INSUFFICIENT_OUTPUT");
 
         if (amount0Out > 0) ERC20(token0).transfer(to, amount0Out);
@@ -63,14 +63,14 @@ contract Pair is ERC20, IUniswapV2Pair {
         reserve1 = uint112(ERC20(token1).balanceOf(address(this)));
     }
 
-    function _min(uint x, uint y) internal pure returns (uint) {
+    function _min(uint256 x, uint256 y) internal pure returns (uint256) {
         return x < y ? x : y;
     }
 
-    function sqrt(uint y) internal pure returns (uint z) {
+    function sqrt(uint256 y) internal pure returns (uint256 z) {
         if (y > 3) {
             z = y;
-            uint x = y / 2 + 1;
+            uint256 x = y / 2 + 1;
             while (x < z) {
                 z = x;
                 x = (y / x + x) / 2;
@@ -80,4 +80,3 @@ contract Pair is ERC20, IUniswapV2Pair {
         }
     }
 }
-
