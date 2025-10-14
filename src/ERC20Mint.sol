@@ -8,6 +8,6 @@ contract ERC20Mint is ERC20 {
 
     function mint(address to, uint256 amount) external {
         require(to != address(0), "Invalid mint to zero address");
-	_mint(to, amount);
+        _mint(to, amount);
     }
 }

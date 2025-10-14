@@ -9,7 +9,7 @@ contract Factory is IUniswapV2Factory {
 
     function createPair(address tokenA, address tokenB) external override returns (address pair) {
         require(tokenA != tokenB, "IDENTICAL_ADDRESSES");
-	require(tokenA != address(0) && tokenB != address(0), "ZERO_ADDRESS)");
+        require(tokenA != address(0) && tokenB != address(0), "ZERO_ADDRESS)");
         require(getPair[tokenA][tokenB] == address(0), "PAIR_EXISTS");
 
         Pair newPair = new Pair(tokenA, tokenB);

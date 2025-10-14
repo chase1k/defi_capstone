@@ -42,10 +42,10 @@ contract ExchangeTest is Test {
         uint256 liquidity = router.addLiquidity(address(tokenA), address(tokenB), 500 ether, 500 ether, alice);
         assertGt(liquidity, 0);
 
-	// check reserves
-	address pairAddr = factory.getPair(address(tokenA), address(tokenB));
-	Pair pair = Pair(pairAddr);
-	(uint112 r0, uint112 r1) = pair.getReserves();
+        // check reserves
+        address pairAddr = factory.getPair(address(tokenA), address(tokenB));
+        Pair pair = Pair(pairAddr);
+        (uint112 r0, uint112 r1) = pair.getReserves();
         assertGt(r0, 0);
         assertGt(r1, 0);
 
@@ -56,11 +56,11 @@ contract ExchangeTest is Test {
         // Swap
         vm.prank(bob);
         uint256 amountOut = router.swapExactTokensForTokens(10 ether, 0, address(tokenA), address(tokenB), bob);
-        
-	//emit log_named_uint("Bob TKB balance", tokenB.balanceOf(bob));
-	//emit log_named_uint("Pair reserves0", r0);
-	//emit log_named_uint("Pair reserves1", r1);
 
-	//assertGt(tokenB.balanceOf(bob), 0);
+        //emit log_named_uint("Bob TKB balance", tokenB.balanceOf(bob));
+        //emit log_named_uint("Pair reserves0", r0);
+        //emit log_named_uint("Pair reserves1", r1);
+
+        //assertGt(tokenB.balanceOf(bob), 0);
     }
 }

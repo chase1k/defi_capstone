@@ -15,7 +15,14 @@ contract Pair is ERC20, IUniswapV2Pair {
 
     event Mint(address indexed sender, uint256 amount0, uint256 amount1, address indexed to);
     event Burn(address indexed sender, uint256 amount0, uint256 amount1, address indexed to);
-    event Swap(address indexed sender, uint256 amount0In, uint256 amount1In, uint256 amount0Out, uint256 amount1Out, address indexed to);
+    event Swap(
+        address indexed sender,
+        uint256 amount0In,
+        uint256 amount1In,
+        uint256 amount0Out,
+        uint256 amount1Out,
+        address indexed to
+    );
     event Sync(uint112 reserve0, uint112 reserve1);
 
     constructor(address _token0, address _token1) ERC20("LP Token", "LP") {
@@ -83,23 +90,23 @@ contract Pair is ERC20, IUniswapV2Pair {
         require(to != address(0), "INVALID_RECEIVER");
         require(amount0Out > 0 || amount1Out > 0, "INSUFFICIENT_OUTPUT");
 
-    	(uint112 _reserve0, uint112 _reserve1) = (reserve0, reserve1);
+        (uint112 _reserve0, uint112 _reserve1) = (reserve0, reserve1);
 
-    	require(amount0Out < _reserve0 && amount1Out < _reserve1, "INSUFFICIENT_LIQUIDITY");
+        require(amount0Out < _reserve0 && amount1Out < _reserve1, "INSUFFICIENT_LIQUIDITY");
 
-    	if (amount0Out > 0) IERC20(token0).transfer(to, amount0Out);
-    	if (amount1Out > 0) IERC20(token1).transfer(to, amount1Out);
+        if (amount0Out > 0) IERC20(token0).transfer(to, amount0Out);
+        if (amount1Out > 0) IERC20(token1).transfer(to, amount1Out);
 
-    	// update reserves after swap
-    	uint256 newBal0 = ERC20(token0).balanceOf(address(this));
-    	uint256 newBal1 = ERC20(token1).balanceOf(address(this));
+        // update reserves after swap
+        uint256 newBal0 = ERC20(token0).balanceOf(address(this));
+        uint256 newBal1 = ERC20(token1).balanceOf(address(this));
 
-    	reserve0 = uint112(newBal0);
-    	reserve1 = uint112(newBal1);
+        reserve0 = uint112(newBal0);
+        reserve1 = uint112(newBal1);
 
-    	emit Swap(msg.sender, _reserve0 - newBal0, _reserve1 - newBal1, amount0Out, amount1Out, to);
-    	emit Sync(reserve0, reserve1);
-	}
+        emit Swap(msg.sender, _reserve0 - newBal0, _reserve1 - newBal1, amount0Out, amount1Out, to);
+        emit Sync(reserve0, reserve1);
+    }
 
     function _min(uint256 x, uint256 y) internal pure returns (uint256) {
         return x < y ? x : y;
@@ -118,4 +125,3 @@ contract Pair is ERC20, IUniswapV2Pair {
         }
     }
 }
-
