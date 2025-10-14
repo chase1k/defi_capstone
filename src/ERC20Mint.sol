@@ -7,6 +7,7 @@ contract ERC20Mint is ERC20 {
     constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) {}
 
     function mint(address to, uint256 amount) external {
-        _mint(to, amount);
+        require(to != address(0), "Invalid mint to zero address");
+	_mint(to, amount);
     }
 }
