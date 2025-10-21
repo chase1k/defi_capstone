@@ -1,0 +1,34 @@
+# Echidna Configuration for Truster Challenge
+testMode: property
+testLimit: 100000
+shrinkLimit: 10000
+
+# Timeout and performance
+timeout: 600
+maxValue: 1000000000000000000000000
+
+# Corpus and coverage
+corpusDir: "echidna_corpus"
+coverage: true
+
+# Sequence length for multi-transaction attacks
+seqLen: 10
+
+# Solidity compiler settings
+solcArgs: "--optimize --optimize-runs 200"
+
+# Filter functions to test
+filterFunctions: [
+  "attemptApprovalExploit",
+  "attemptEmergencyWithdrawExploit", 
+  "attemptGenericCall",
+  "attemptFlashLoan",
+  "attemptTokenManipulation",
+  "echidna_pool_balance_invariant",
+  "echidna_no_unauthorized_approvals",
+  "echidna_attacker_balance_limited",
+  "echidna_flash_loan_accounting"
+]
+
+# Format for better output
+format: text
