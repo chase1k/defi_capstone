@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19
+pragma solidity ^0.8.19;
 
 import {IERC3156FlashBorrower, IERC3156FlashLender} from "@openzeppelin/contracts/interfaces/IERC3156.sol";
 
@@ -7,25 +7,25 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {ERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
 
-import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {Pausable} from "@openzeppelin/contracts/security/Pausable.sol"
+import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 
 contract VulnerablePool is IERC3156FlashLender, ReentrancyGuard, Ownable, ERC4626, Pausable {
 	uint256 public constant FEE_FACTOR = 500;
 	uint256 public constant GRACE_PERIOD = 30 days;
 
 	uint256 public immutable deploymentTime;
-	address public feeRecipent;
+	address public feeRecipient;
 
-	error InvalidAmount(uint256 amount);
+	error InvalidAmount();
 	error InvalidBalance();
 	error CallbackFailed();
 	error UnsupportedToken();
 
 
 	event FlashLoanExecuted(address indexed receiver, uint256 amount, uint256 fee);
-	event FeeRecipientUpdataed (address indexed newFeeRecipient);
+	event FeeRecipientUpdated (address indexed newFeeRecipient);
 
 	constructor(
 		IERC20 _asset,
@@ -66,7 +66,7 @@ contract VulnerablePool is IERC3156FlashLender, ReentrancyGuard, Ownable, ERC462
 	}
 
 	function flashLoan(
-		IERC3156FlashBorrower reciever,
+		IERC3156FlashBorrower receiver,
 		address token,
 		uint256 amount,
 		bytes calldata data
@@ -88,7 +88,7 @@ contract VulnerablePool is IERC3156FlashLender, ReentrancyGuard, Ownable, ERC462
 
 		uint256 fee = flashFee(token, amount);
 	
-		IERC20(token.transfer(address(receiver), amount);
+		IERC20(token).transfer(address(receiver), amount);
 
 		if (receiver.onFlashLoan(msg.sender, token, amount, fee, data)
 		    != keccak256("ERC3156FlashBorrower.onFlashLoan")
