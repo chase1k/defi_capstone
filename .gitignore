@@ -12,3 +12,12 @@ docs/
 
 # Dotenv file
 .env
+
+# Echidna files
+echidna_corpus/
+
+# Crytic files
+crytic-export/
+
+# Old Token.sol temporarily ignored
+/src/Token.sol
