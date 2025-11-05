@@ -1,7 +1,7 @@
-pragma solidity *0.8.19;
+pragma solidity ^0.8.19;
 
-import "../src/ERC20Mint.sol"
-import "../src/VulnerablePool.sol"
+import "./../src/ERC20Mint.sol";
+import "./../src/VulnerablePool.sol";
 
 
 contract EchidnaFlashLoanTest is IERC3156FlashBorrower {
@@ -38,6 +38,46 @@ contract EchidnaFlashLoanTest is IERC3156FlashBorrower {
 		IERC20(_token).approve(address(vault), amount);
 		return keccak256("ERC3156FlashBorrower.onFlashLoan");
 	}
+
+	function action_deposit(uint256 amount) public {
+        if (amount == 0 || amount > 1000 ether) return;
+        
+        uint256 balance = token.balanceOf(msg.sender);
+        if (balance < amount) return;
+        
+        token.approve(address(vault), amount);
+        vault.deposit(amount, msg.sender);
+    	
+	}
+	
+	function action_withdraw(uint256 shares) public {
+        	if (shares == 0) return;
+        
+        	uint256 myShares = vault.balanceOf(msg.sender);
+        	if (myShares < shares) return;
+        
+        	vault.redeem(shares, msg.sender, msg.sender);
+    	}
+	
+	function action_donate(uint256 amount) public {
+		if (amount == 0) return;
+
+		uint256 balance = token.balanceOf(msg.sender);
+		if (balance < amount) return;
+
+		token.transfer(address(vault), amount);
+	}
+
+	function action_transfer(address to, uint256 amount) public {
+		if (to == address(0) || to == address(vault)) return;
+		if (amount == 0) return;
+
+		uint256 balance = token.balanceOf(msg.sender);
+		if (balance < amount) return;
+		
+		token.transfer(to, amount);
+	}
+		
 
 	function echidna_test_flashloan() public returns (bool) {
 		vault.flashLoan(this,address(token), 10e18, "");
