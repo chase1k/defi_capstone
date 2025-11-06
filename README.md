@@ -40,4 +40,4 @@ VulnNet contains vulnerable smart contracts organized by vulnerability type, alo
 - **`unstoppable/`**: Forge tests and Echidna fuzzing harnesses for the Unstoppable vulnerability
 - **`ExchangeTest.t.sol`**: Tests for the exchange contracts
 
-Each vulnerability includes both solved and unsolved test templates for educational purposes.
+Trust includes both solved and unsolved test templates for educational purposes.
