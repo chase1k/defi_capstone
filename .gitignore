@@ -18,6 +18,7 @@ echidna_corpus/
 
 # Crytic files
 crytic-export/
+crytic-export/combined_solc.json
 
 # Old Token.sol temporarily ignored
 /src/Token.sol
