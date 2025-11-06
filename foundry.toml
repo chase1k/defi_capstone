@@ -1,0 +1,25 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.20"
+remappings = [
+    "ds-test/=lib/solmate/lib/ds-test/src/",
+    "solmate/=lib/solmate/src/",
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+]
+
+# Fuzz testing configuration
+[fuzz]
+runs = 10000
+max_test_rejects = 65536
+seed = "0x1234"
+dictionary_weight = 40
+include_storage = true
+include_push_bytes = true
+
+[profile.default.overrides]
+"lib/v2-core/**/*.sol" = { solc_version = "0.5.16" }
+"lib/v2-periphery/**/*.sol" = { solc_version = "0.6.6" }
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
