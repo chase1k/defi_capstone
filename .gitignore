@@ -16,9 +16,13 @@ docs/
 # Echidna files
 echidna_corpus/
 
-# Crytic files
+# Crytic artifact files
 crytic-export/
 crytic-export/combined_solc.json
+
+# Foundry files
+out/
+cache/
 
 # Old Token.sol temporarily ignored
 /src/Token.sol
