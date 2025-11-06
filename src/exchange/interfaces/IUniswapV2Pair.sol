@@ -9,3 +9,4 @@ interface IUniswapV2Pair {
     function burn(address to) external returns (uint256 amount0, uint256 amount1);
     function swap(uint256 amount0Out, uint256 amount1Out, address to) external;
 }
+

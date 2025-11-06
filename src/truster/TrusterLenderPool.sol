@@ -4,16 +4,16 @@ pragma solidity ^0.8.20;
 
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import {MyToken} from "../Token.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract TrusterLenderPool is ReentrancyGuard {
     using Address for address;
 
-    MyToken public immutable token;
+    IERC20 public immutable token;
 
     error RepayFailed();
 
-    constructor(MyToken _token) {
+    constructor(IERC20 _token) {
         token = _token;
     }
 

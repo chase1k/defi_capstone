@@ -1,83 +1,43 @@
-## Foundry
+# VulnNet
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A collection of vulnerable smart contracts and their corresponding test suites for security research and educational purposes.
 
-Foundry consists of:
+## Running Tests
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### Forge Tests
 
-## Documentation
+Run Forge tests for the Unstoppable challenge:
 
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```bash
+forge test --match-path test/unstoppable/Unstoppable.t.sol
 ```
 
-### Test
+### Echidna Tests
 
-```shell
-$ forge test
+Run Echidna property-based fuzzing tests for Truster challenges:
+
+```bash
+# Run the unsolved challenge template
+echidna test/truster/echidna/TrusterEchidna.t.sol --contract TrusterEchidna
+
+# Run the solved version
+echidna test/truster/echidna/SolvedTrusterEchidna.t.sol --contract TrusterEchidna
 ```
 
-### Format
+## Overview
 
-```shell
-$ forge fmt
-```
+VulnNet contains vulnerable smart contracts organized by vulnerability type, along with comprehensive test suites.
 
-### Gas Snapshots
+### Source Files (`src/`)
 
-```shell
-$ forge snapshot
-```
+- **`exchange/`**: Exchange-related contracts including ERC20Mint token, Factory, Router, and Pair contracts for a Uniswap-like DEX implementation
+- **`truster/`**: TrusterLenderPool - A flash loan pool vulnerable to unauthorized token approvals via malicious callback data
+- **`unstoppable/`**: VulnerablePool - An ERC4626 vault with a flash loan vulnerability where direct token transfers break the accounting invariant
 
-### Anvil
+### Test Files (`test/`)
 
-```shell
-$ anvil
-```
+- **`truster/`**: Tests and Echidna fuzzing harnesses for the Truster vulnerability
+- **`unstoppable/`**: Forge tests and Echidna fuzzing harnesses for the Unstoppable vulnerability
+- **`ExchangeTest.t.sol`**: Tests for the exchange contracts
 
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
-## Overview of VulnNet
-
-This branch consists of two parts the ./src files and ./test files
-
-### ./src files
-Token.sol
-MyToken a solmate based ERC20 test token
-
-VulnerablePool.sol
-Remake of the Damn Vulnerable Defi Unstopable vulnerability
-flash loan contract contains lines of code that are vulnerable if an attacker were to send tokens directly to the vulnerable pool. This is due to the check involved with BalanceAfter required to be equal to the accounting balance. 
-
-### Vulnerability summary
-The contract trusts an internal accounting balance which is compared to balance after. If an attacker were to send tokens directly to the vulnerable pool it could cause accounting balance to not be updated properly which will revert due to the check that requires balance after to accounting balance causing a denial of service for flashloans
-
-### ./test files
-Serve as unit tests to setup the vunerable pool along with another externally owned account that will attempt to call flashloan contract. The tests in these files are to determine if the flash loans work as they should and if the attack can be exploited. 
+Each vulnerability includes both solved and unsolved test templates for educational purposes.

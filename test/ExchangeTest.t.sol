@@ -3,10 +3,10 @@ pragma solidity ^0.8.19;
 
 import "forge-std/Test.sol";
 
-import "../src/ERC20Mint.sol";
-import "../src/Factory.sol";
-import "../src/Router.sol";
-import "../src/Pair.sol";
+import "../src/exchange/ERC20Mint.sol";
+import "../src/exchange/Factory.sol";
+import "../src/exchange/Router.sol";
+import "../src/exchange/Pair.sol";
 
 contract ExchangeTest is Test {
     ERC20Mint tokenA;

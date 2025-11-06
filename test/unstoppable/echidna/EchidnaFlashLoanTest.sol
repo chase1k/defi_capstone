@@ -1,7 +1,9 @@
 pragma solidity ^0.8.19;
 
-import "./../src/ERC20Mint.sol";
-import "./../src/VulnerablePool.sol";
+import {IERC3156FlashBorrower} from "@openzeppelin/contracts/interfaces/IERC3156.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "src/exchange/ERC20Mint.sol";
+import "src/unstoppable/VulnerablePool.sol";
 
 
 contract EchidnaFlashLoanTest is IERC3156FlashBorrower {

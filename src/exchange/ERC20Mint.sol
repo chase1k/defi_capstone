@@ -11,3 +11,4 @@ contract ERC20Mint is ERC20 {
         _mint(to, amount);
     }
 }
+

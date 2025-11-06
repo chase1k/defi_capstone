@@ -2,21 +2,22 @@
 pragma solidity ^0.8.19;
 
 import "forge-std/Test.sol";
-import {MyToken} from "../../src/Token.sol";
-import {VulnerablePool} from "../../src/unstoppable/VulnerablePool.sol";
+import {ERC20Mint} from "src/exchange/ERC20Mint.sol";
+import {VulnerablePool} from "src/unstoppable/VulnerablePool.sol";
+import {IERC3156FlashBorrower, IERC3156FlashLender} from "@openzeppelin/contracts/interfaces/IERC3156.sol";
 
-contract UnstoppableTest is Test {
-    MyToken token;
+abstract contract UnstoppableTest is Test, IERC3156FlashBorrower {
+    ERC20Mint token;
     VulnerablePool pool;
     address user = address(0x1);
     address attacker = address(0x2);
 
     function setUp() public {
         // 1) Deploy token
-        token = new MyToken("My Test Token", "MTK");
+        token = new ERC20Mint("My Test Token", "MTK");
 
         // 2) Deploy pool
-        pool = new VulnerablePool(address(token));
+        pool = new VulnerablePool(token, "My Test Token", "MTK", msg.sender); {}
 
         // 3) Mint tokens for user
         token.mint(user, 100 ether);
@@ -24,11 +25,11 @@ contract UnstoppableTest is Test {
         // 4) Approve and deposit into pool
         vm.startPrank(user);
         token.approve(address(pool), type(uint256).max);
-        pool.deposit(100 ether);
+        pool.deposit(100 ether, user);
         vm.stopPrank();
 
         // 5) Sanity check
-        assertEq(token.balanceOf(address(pool)), pool.accountingBalance());
+        assertEq(token.balanceOf(address(pool)), pool.totalAssets());
     }
 
     /// @notice Demonstrates that sending tokens directly to the pool breaks the flashLoan invariant
@@ -37,13 +38,13 @@ contract UnstoppableTest is Test {
         vm.prank(attacker);
         token.mint(attacker, 10 ether);
 
-        // attacker transfers directly to pool (bypassing deposit)
+        // attacker transfers directly to pool (bypassing deposit)  
         vm.prank(attacker);
         token.transfer(address(pool), 10 ether);
 
         // flashLoan should now revert due to broken invariant
         vm.expectRevert(bytes("invariant violated"));
-        pool.flashLoan(1 ether, user, "");
+        pool.flashLoan(IERC3156FlashBorrower(this), address(token), 1 ether, "");
     }
 
     /// @notice Optional: demonstrate pool still works normally before attacker
@@ -52,11 +53,11 @@ contract UnstoppableTest is Test {
     	token.mint(user, 50 ether);
     	vm.startPrank(user);
     	token.approve(address(pool), type(uint256).max);
-    	pool.deposit(50 ether);
+    	pool.deposit(50 ether, user);
     	vm.stopPrank();
 
     // flashLoan should succeed now
-    	pool.flashLoan(10 ether, user, "");
+    	pool.flashLoan(IERC3156FlashBorrower(this), address(token), 10 ether, "");
     }
 }
 
