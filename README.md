@@ -1,4 +1,4 @@
-# VulnNet
+# DeFi Smart Contract Analysis
 
 A collection of vulnerable smart contracts and their corresponding test suites for security research and educational purposes.
 
