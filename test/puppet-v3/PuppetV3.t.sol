@@ -56,17 +56,14 @@ contract PuppetV3Challenge is Test {
         weth.deposit{value: UNISWAP_INITIAL_WETH_LIQUIDITY}();
 
         // Deploy DVT token. This is the token to be traded against WETH in the Uniswap v3 pool.
-            token = new ERC20Mint("MyToken", "MTK");
+        token = new ERC20Mint("MyToken", "MTK");
 
         // Create Uniswap v3 pool
         bool isWethFirst = address(weth) < address(token);
         address token0 = isWethFirst ? address(weth) : address(token);
         address token1 = isWethFirst ? address(token) : address(weth);
         positionManager.createAndInitializePoolIfNecessary({
-            token0: token0,
-            token1: token1,
-            fee: FEE,
-            sqrtPriceX96: _encodePriceSqrt(1, 1)
+            token0: token0, token1: token1, fee: FEE, sqrtPriceX96: _encodePriceSqrt(1, 1)
         });
 
         IUniswapV3Pool uniswapPool = IUniswapV3Pool(uniswapFactory.getPool(address(weth), address(token), FEE));

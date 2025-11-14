@@ -68,10 +68,7 @@ contract FlashLoanReceiver is INaiveReceiverReceiver {
         token = ERC20Mint(pool.token());
     }
 
-    function onFlashLoan(address, address _token, uint256 amount, uint256 fee, bytes calldata)
-        external
-        returns (bool)
-    {
+    function onFlashLoan(address, address _token, uint256 amount, uint256 fee, bytes calldata) external returns (bool) {
         if (msg.sender != address(pool)) {
             revert CallbackNotAllowed();
         }

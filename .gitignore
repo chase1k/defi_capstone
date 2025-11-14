@@ -10,9 +10,6 @@ out/
 # Docs
 docs/
 
-# Dotenv file
-.env
-
 # Echidna files
 echidna_corpus/
 
@@ -23,6 +20,3 @@ crytic-export/combined_solc.json
 # Foundry files
 out/
 cache/
-
-# Old Token.sol temporarily ignored
-/src/Token.sol

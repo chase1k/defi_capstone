@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 // Damn Vulnerable DeFi v4 (https://damnvulnerabledefi.xyz)
-pragma solidity ^0.8.20;
+pragma solidity =0.8.25;
 
 import {WETH} from "solmate/tokens/WETH.sol";
 import {ERC20Mint} from "../exchange/ERC20Mint.sol";
 import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 import {TransferHelper} from "@uniswap/v3-core/contracts/libraries/TransferHelper.sol";
-import {OracleLibrary} from "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol";
+import {OracleHelper} from "./OracleHelper.sol";
 
 /**
  * @notice A lending pool using Uniswap v3 as TWAP oracle.
@@ -59,12 +59,9 @@ contract PuppetV3Pool {
     }
 
     function _getOracleQuote(uint128 amount) private view returns (uint256) {
-        (int24 arithmeticMeanTick,) = OracleLibrary.consult({pool: address(uniswapV3Pool), secondsAgo: TWAP_PERIOD});
-        return OracleLibrary.getQuoteAtTick({
-            tick: arithmeticMeanTick,
-            baseAmount: amount,
-            baseToken: address(token),
-            quoteToken: address(weth)
+        (int24 arithmeticMeanTick,) = OracleHelper.consult({pool: address(uniswapV3Pool), secondsAgo: TWAP_PERIOD});
+        return OracleHelper.getQuoteAtTick({
+            tick: arithmeticMeanTick, baseAmount: amount, baseToken: address(token), quoteToken: address(weth)
         });
     }
 
