@@ -17,7 +17,8 @@ abstract contract UnstoppableTest is Test, IERC3156FlashBorrower {
         token = new ERC20Mint("My Test Token", "MTK");
 
         // 2) Deploy pool
-        pool = new VulnerablePool(token, "My Test Token", "MTK", msg.sender); {}
+        pool = new VulnerablePool(token, "My Test Token", "MTK", msg.sender);
+        {}
 
         // 3) Mint tokens for user
         token.mint(user, 100 ether);
@@ -38,7 +39,7 @@ abstract contract UnstoppableTest is Test, IERC3156FlashBorrower {
         vm.prank(attacker);
         token.mint(attacker, 10 ether);
 
-        // attacker transfers directly to pool (bypassing deposit)  
+        // attacker transfers directly to pool (bypassing deposit)
         vm.prank(attacker);
         token.transfer(address(pool), 10 ether);
 
@@ -49,16 +50,14 @@ abstract contract UnstoppableTest is Test, IERC3156FlashBorrower {
 
     /// @notice Optional: demonstrate pool still works normally before attacker
     function testFlashLoanBeforeAttack() public {
-    // mint and deposit to ensure invariant holds
-    	token.mint(user, 50 ether);
-    	vm.startPrank(user);
-    	token.approve(address(pool), type(uint256).max);
-    	pool.deposit(50 ether, user);
-    	vm.stopPrank();
+        // mint and deposit to ensure invariant holds
+        token.mint(user, 50 ether);
+        vm.startPrank(user);
+        token.approve(address(pool), type(uint256).max);
+        pool.deposit(50 ether, user);
+        vm.stopPrank();
 
-    // flashLoan should succeed now
-    	pool.flashLoan(IERC3156FlashBorrower(this), address(token), 10 ether, "");
+        // flashLoan should succeed now
+        pool.flashLoan(IERC3156FlashBorrower(this), address(token), 10 ether, "");
     }
 }
-
-

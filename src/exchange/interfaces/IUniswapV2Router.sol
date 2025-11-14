@@ -14,4 +14,3 @@ interface IUniswapV2Router {
         address to
     ) external returns (uint256 amountOut);
 }
-
