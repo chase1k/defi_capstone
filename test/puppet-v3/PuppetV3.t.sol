@@ -52,11 +52,18 @@ contract PuppetV3Challenge is Test {
         // Set player's initial balance
         deal(player, PLAYER_INITIAL_ETH_BALANCE);
 
+        // Give deployer enough ETH to deposit into WETH
+        deal(deployer, UNISWAP_INITIAL_WETH_LIQUIDITY);
+
         // Deployer wraps ETH in WETH
         weth.deposit{value: UNISWAP_INITIAL_WETH_LIQUIDITY}();
 
         // Deploy DVT token. This is the token to be traded against WETH in the Uniswap v3 pool.
         token = new ERC20Mint("MyToken", "MTK");
+        
+        // Mint tokens needed for liquidity, lending pool, and player
+        uint256 totalTokensNeeded = UNISWAP_INITIAL_TOKEN_LIQUIDITY + LENDING_POOL_INITIAL_TOKEN_BALANCE + PLAYER_INITIAL_TOKEN_BALANCE;
+        token.mint(deployer, totalTokensNeeded);
 
         // Create Uniswap v3 pool
         bool isWethFirst = address(weth) < address(token);
