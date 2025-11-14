@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 // Damn Vulnerable DeFi v4 (https://damnvulnerabledefi.xyz)
-pragma solidity =0.8.30;
+pragma solidity ^0.8.20;
 
 import {WETH} from "solmate/tokens/WETH.sol";
-import {DamnValuableToken} from "../../src/DamnValuableToken.sol";
+import {ERC20Mint} from "../exchange/ERC20Mint.sol";
 import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 import {TransferHelper} from "@uniswap/v3-core/contracts/libraries/TransferHelper.sol";
 import {OracleLibrary} from "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol";
@@ -16,14 +16,14 @@ contract PuppetV3Pool {
     uint32 public constant TWAP_PERIOD = 10 minutes;
 
     WETH public immutable weth;
-    DamnValuableToken public immutable token;
+    ERC20Mint public immutable token;
     IUniswapV3Pool public immutable uniswapV3Pool;
 
     mapping(address => uint256) public deposits;
 
     event Borrowed(address indexed borrower, uint256 depositAmount, uint256 borrowAmount);
 
-    constructor(WETH _weth, DamnValuableToken _token, IUniswapV3Pool _uniswapV3Pool) {
+    constructor(WETH _weth, ERC20Mint _token, IUniswapV3Pool _uniswapV3Pool) {
         weth = _weth;
         token = _token;
         uniswapV3Pool = _uniswapV3Pool;

@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: MIT
 // Damn Vulnerable DeFi v4 (https://damnvulnerabledefi.xyz)
-pragma solidity =0.8.30;
+pragma solidity ^0.8.20;
 
 import {Test, console} from "forge-std/Test.sol";
 import {IUniswapV3Factory} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
 import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 import {WETH} from "solmate/tokens/WETH.sol";
 import {FixedPointMathLib} from "solmate/utils/FixedPointMathLib.sol";
-import {DamnValuableToken} from "../../src/DamnValuableToken.sol";
+import {ERC20Mint} from "../../src/exchange/ERC20Mint.sol";
 import {INonfungiblePositionManager} from "../../src/puppet-v3/INonfungiblePositionManager.sol";
 import {PuppetV3Pool} from "../../src/puppet-v3/PuppetV3Pool.sol";
+import {ISwapRouter} from "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
 contract PuppetV3Challenge is Test {
     address deployer = makeAddr("deployer");
@@ -27,7 +28,7 @@ contract PuppetV3Challenge is Test {
     INonfungiblePositionManager positionManager =
         INonfungiblePositionManager(payable(0xC36442b4a4522E871399CD717aBDD847Ab11FE88));
     WETH weth = WETH(payable(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2));
-    DamnValuableToken token;
+    ERC20Mint token;
     PuppetV3Pool lendingPool;
 
     uint256 initialBlockTimestamp;
@@ -55,7 +56,7 @@ contract PuppetV3Challenge is Test {
         weth.deposit{value: UNISWAP_INITIAL_WETH_LIQUIDITY}();
 
         // Deploy DVT token. This is the token to be traded against WETH in the Uniswap v3 pool.
-        token = new DamnValuableToken();
+            token = new ERC20Mint("MyToken", "MTK");
 
         // Create Uniswap v3 pool
         bool isWethFirst = address(weth) < address(token);
