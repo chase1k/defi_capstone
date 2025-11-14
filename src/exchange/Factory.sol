@@ -19,4 +19,3 @@ contract Factory is IUniswapV2Factory {
         getPair[tokenB][tokenA] = pair;
     }
 }
-
