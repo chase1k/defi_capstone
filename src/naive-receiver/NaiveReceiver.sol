@@ -1,6 +1,6 @@
 pragma solidity ^0.8.19;
 
-import "./ERC20Mint.sol";
+import "../exchange/ERC20Mint.sol";
 
 abstract contract Multicall {
     function multicall(bytes[] calldata data) external virtual returns (bytes[] memory results) {
