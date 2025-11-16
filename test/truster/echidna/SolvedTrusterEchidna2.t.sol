@@ -29,13 +29,15 @@ contract TrusterEchidna {
     }
 
     // Attempt to find approval function
-    // 2^32 possible function selectors 
+    // 2^32 possible function selectors
     function attemptFunctionCall(
         uint256 amount,
-        bytes4 selector,  // Echidna fuzzes any 4-byte function selector
+        bytes4 selector, // Echidna fuzzes any 4-byte function selector
         address param1,
         uint256 param2
-    ) public {
+    )
+        public
+    {
         bytes memory data = abi.encodeWithSelector(selector, param1, param2);
 
         try pool.flashLoan(amount, attacker, address(token), data) {} catch {}
