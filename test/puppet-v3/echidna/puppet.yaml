@@ -1,0 +1,32 @@
+# Echidna configuration for Puppet V3 fuzzing
+
+# Test execution
+testLimit: 10000000
+testMode: property
+
+# Coverage and corpus
+corpusDir: "echidna-corpus"
+coverageFormats: ["txt", "html"]
+
+# RPC configuration 
+rpcUrl: "http://127.0.0.1:8545"
+rpcBlock: 15450164 
+
+# Worker configuration
+# workers: 1
+
+# Prefix for test functions
+prefix: "echidna_"
+
+# Initial balance for the contract itself (needed for WETH deposits)
+balanceContract: 1000000000000000000000  # 1000 ETH
+
+# Allow failures to continue fuzzing
+stopOnFail: false
+
+# Corpus management
+seed: 0
+
+# Multi-ABI support
+allContracts: true
+
