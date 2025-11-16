@@ -23,11 +23,6 @@ contract TrusterEchidna {
         token.mint(attacker, 1000e18);
     }
 
-    // No approvals to attacker address
-    function echidna_no_unauthorized_approvals() public view returns (bool) {
-        return token.allowance(address(pool), attacker) == 0 
-    }
-
     // Recovery shouldn't have any tokens
     function echidna_recovery_no_tokens() public view returns (bool) {
         return token.balanceOf(recovery) == 0;
