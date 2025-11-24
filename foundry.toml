@@ -1,16 +1,18 @@
 [profile.default]
 auto_detect_solc = true
 src = "src"
+test = "test"
 out = "out"
 libs = ["lib"]
 solc_version = "0.8.25"
-remappings = [
-    "ds-test/=lib/solmate/lib/ds-test/src/",
-    "solmate/=lib/solmate/src/",
-    "@openzeppelin/=lib/openzeppelin-contracts/",
-    "@uniswap/v3-core/=lib/v3-core/",
-    "@uniswap/v3-periphery/=lib/v3-periphery/",
-]
+use_system_solc = true
+
+# Remappings are in remappings.txt file
+#remappings = [
+#    "ds-test/=lib/solmate/lib/ds-test/src/",
+#    "solmate/=lib/solmate/src/",
+#    "@openzeppelin/=lib/openzeppelin-contracts/",
+#]
 
 # Fuzz testing configuration
 [fuzz]
@@ -20,5 +22,9 @@ seed = "0x1234"
 dictionary_weight = 40
 include_storage = true
 include_push_bytes = true
+
+#[profile.default.overrides]
+#"lib/v2-core/**/*.sol" = { solc_version = "0.5.16" }
+#"lib/v2-periphery/**/*.sol" = { solc_version = "0.6.6" }
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

@@ -20,3 +20,7 @@ crytic-export/combined_solc.json
 # Foundry files
 out/
 cache/
+
+# Node modules and virtual environments
+node_modules/
+.venv/
