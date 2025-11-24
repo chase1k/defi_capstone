@@ -30,7 +30,7 @@ Truster
 echidna test/truster/echidna/TrusterEchidna.t.sol --contract TrusterEchidna
 
 # Run the solved version
-echidna test/truster/echidna/SolvedTrusterEchidna.t.sol --contract TrusterEchidna
+echidna test/truster/echidna/TrusterEchidnaSolved.t.sol --contract TrusterEchidna
 ```
 
 PuppetV3 (Mainnet Forking)
