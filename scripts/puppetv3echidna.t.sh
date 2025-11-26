@@ -66,4 +66,4 @@ trap cleanup EXIT
 
 export ECHIDNA_RPC_URL="http://127.0.0.1:8545"
 export ECHIDNA_RPC_BLOCK=latest
-echidna test/puppet-v3/echidna/PuppetV3EchidnaSolved.t.sol --contract PuppetV3EchidnaSolved --config test/puppet-v3/echidna/puppet.yaml
+echidna test/puppet-v3/echidna/PuppetV3EchidnaSolved.t.sol --contract PuppetV3EchidnaSolved --config test/puppet-v3/echidna/puppetv3.yaml

@@ -12,9 +12,6 @@ coverageFormats: ["txt", "html"]
 rpcUrl: "http://127.0.0.1:8545"
 rpcBlock: 15450164 
 
-# Worker configuration
-# workers: 1
-
 # Prefix for test functions
 prefix: "echidna_"
 

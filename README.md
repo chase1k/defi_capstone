@@ -5,7 +5,7 @@ An evaluation of [DVDeFi](https://github.com/theredguild/damn-vulnerable-defi) s
 
 ## Running Tests
 
-### Forge Tests
+### Example Forge Tests
 
 Unstoppable
 ```bash
@@ -22,7 +22,7 @@ PuppetV3 (Mainnet Forking)
 source .env && forge test --mt "test_puppetV3" --fork-url $MAINNET_FORKING_URL
 ```
 
-### Echidna Tests
+### Example Echidna Tests
 
 Truster
 ```bash
@@ -33,8 +33,15 @@ echidna test/truster/echidna/TrusterEchidna.t.sol --contract TrusterEchidna
 echidna test/truster/echidna/TrusterEchidnaSolved.t.sol --contract TrusterEchidna
 ```
 
+PuppetV2
+```bash
+export SOLC_VERSION=0.8.25
+echidna test/puppet-v2/echidna/PuppetV2EchidnaSolved.t.sol --contract PuppetV2EchidnaSolved --test-limit 1000000
+```
+
 PuppetV3 (Mainnet Forking)
 ```bash
+# Uses existing corpus in `echidna-corpus-puppetv3` otherwise takes a few to find the bugs
 ./scripts/puppetv3echidna.t.sh
 ```
 

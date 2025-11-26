@@ -11,6 +11,12 @@
       "rev": "c64a1edb67b6e3f4a15cca8909c9482ad33a02b0"
     }
   },
+  "lib/uniswap-lib": {
+    "tag": {
+      "name": "v1.1.0",
+      "rev": "31373fe46b9aaf3333ba8a77dbc74f089b1a19ff"
+    }
+  },
   "lib/v2-core": {
     "tag": {
       "name": "v1.0.1",

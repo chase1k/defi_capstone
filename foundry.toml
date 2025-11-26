@@ -16,4 +16,6 @@ dictionary_weight = 40
 include_storage = true
 include_push_bytes = true
 
-# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+[profile.default.dependencies]
+"@uniswap/v2-core" = { version = "0.5.16" }
+"@uniswap/v2-periphery" = { version = "0.6.6" }

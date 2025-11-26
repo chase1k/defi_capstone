@@ -1,0 +1,40 @@
+# Echidna configuration for Puppet V2 fuzzing
+
+# Test execution
+testLimit: 10000000
+testMode: property
+
+# Coverage and corpus
+corpusDir: "echidna-corpus"
+coverageFormats: ["txt", "html"]
+
+# Prefix for test functions
+prefix: "echidna_"
+
+# Initial balance for the contract itself (needed for WETH deposits)
+# balanceContract: 1000000000000000000000  # 1000 ETH
+
+# Allow failures to continue fuzzing
+stopOnFail: false
+
+# Corpus management
+seed: 0
+
+# Multi-ABI support
+allContracts: true
+
+codeSize: 0x20000  # Increased code size limit
+deployer: "0x30000"
+sender: ["0x30000"]
+allowFFI: true
+balanceContract: 30000000000000000000  # 30 ETH for constructor
+# FFI is enabled by default in Echidna
+# cryticArgs:
+#   - "--ignore-compile"
+#   - "--compile-force-framework"
+#   - "foundry"
+
+# # Point to your builds directory
+# buildDirectory: "builds"
+
+# testLimit: 1000000

