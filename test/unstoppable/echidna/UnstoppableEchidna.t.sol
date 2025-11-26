@@ -24,8 +24,12 @@ contract UnstoppableEchidna is IERC3156FlashBorrower {
     }
 
     function onFlashLoan(address initiator, address _token, uint256 amount, uint256 fee, bytes calldata)
-        external returns (bytes32){
-        require(initiator == address(this) && msg.sender == address(vault) && _token == address(vault.asset()) && fee == 0);
+        external
+        returns (bytes32)
+    {
+        require(
+            initiator == address(this) && msg.sender == address(vault) && _token == address(vault.asset()) && fee == 0
+        );
 
         IERC20(_token).approve(address(vault), amount);
         return keccak256("ERC3156FlashBorrower.onFlashLoan");
