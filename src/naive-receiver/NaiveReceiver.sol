@@ -39,7 +39,7 @@ contract NaiveReceiverLenderPool is Multicall {
             INaiveReceiverReceiver(borrower).onFlashLoan(msg.sender, address(token), amount, FIXED_FEE, "");
         }
 
-	token.transferFrom(borrower, address(this), amount + FIXED_FEE);
+        token.transferFrom(borrower, address(this), amount + FIXED_FEE);
 
         if (token.balanceOf(address(this)) < balanceBefore + FIXED_FEE) {
             revert RepayFailed();

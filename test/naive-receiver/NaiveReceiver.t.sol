@@ -5,76 +5,73 @@ import "../../src/exchange/ERC20Mint.sol";
 import "../../src/naive-receiver/NaiveReceiver.sol";
 
 contract NaiveReceiverTest is Test {
-	ERC20Mint public token;
-	NaiveReceiverLenderPool public pool;
-	FlashLoanReceiver public receiver;
+    ERC20Mint public token;
+    NaiveReceiverLenderPool public pool;
+    FlashLoanReceiver public receiver;
 
-	address public User = address(0x1234);
-	address public attacker = address(0x5678);
+    address public User = address(0x1234);
+    address public attacker = address(0x5678);
 
-	uint256 constant TOKENS_IN_POOL = 1000 ether;
-	uint256 constant TOKENS_IN_RECEIVER = 10 ether;
-	uint256 constant FIXED_FEE = 1 ether;
+    uint256 constant TOKENS_IN_POOL = 1000 ether;
+    uint256 constant TOKENS_IN_RECEIVER = 10 ether;
+    uint256 constant FIXED_FEE = 1 ether;
 
-	function setUp() public {
-		token = new ERC20Mint("Test Token", "TEST");
-		pool = new NaiveReceiverLenderPool(address(token));
-		receiver = new FlashLoanReceiver(address(pool));
+    function setUp() public {
+        token = new ERC20Mint("Test Token", "TEST");
+        pool = new NaiveReceiverLenderPool(address(token));
+        receiver = new FlashLoanReceiver(address(pool));
 
-		token.mint(address(pool), TOKENS_IN_POOL);
-		token.mint(address(receiver), TOKENS_IN_RECEIVER);
-		token.mint(User, 100 ether);
-	}
+        token.mint(address(pool), TOKENS_IN_POOL);
+        token.mint(address(receiver), TOKENS_IN_RECEIVER);
+        token.mint(User, 100 ether);
+    }
 
-	function test_NormalExecution_ReceiverRequestsLoan() public {
-		console.log("Scenario: Receiver legitmately request a flashloan");
+    function test_NormalExecution_ReceiverRequestsLoan() public {
+        console.log("Scenario: Receiver legitmately request a flashloan");
 
-		uint256 receiverBefore = token.balanceOf(address(receiver));
-		uint256 poolBefore = token.balanceOf(address(pool));
+        uint256 receiverBefore = token.balanceOf(address(receiver));
+        uint256 poolBefore = token.balanceOf(address(pool));
 
-		console.log("- Receiver balance:", receiverBefore);
-		console.log("- Pool balance: ", poolBefore);
+        console.log("- Receiver balance:", receiverBefore);
+        console.log("- Pool balance: ", poolBefore);
 
+        vm.prank(address(receiver));
+        pool.flashLoan(address(receiver), 100 ether);
 
-		vm.prank(address(receiver));
-		pool.flashLoan(address(receiver), 100 ether);
+        uint256 receiverAfter = token.balanceOf(address(receiver));
+        uint256 poolAfter = token.balanceOf(address(pool));
 
-		uint256 receiverAfter = token.balanceOf(address(receiver));
-		uint256 poolAfter = token.balanceOf(address(pool));
+        console.log("- Receiver balance:", receiverAfter);
+        console.log("- Pool balance:    ", poolAfter);
+        console.log("- Fee paid:        ", FIXED_FEE);
 
-		console.log("- Receiver balance:", receiverAfter);
-       		console.log("- Pool balance:    ", poolAfter);
-        	console.log("- Fee paid:        ", FIXED_FEE);
+        assertEq(receiverAfter, receiverBefore - FIXED_FEE);
 
-		assertEq(receiverAfter, receiverBefore - FIXED_FEE);
+        assertEq(poolAfter, poolBefore + FIXED_FEE);
 
-		assertEq(poolAfter, poolBefore + FIXED_FEE);
+        console.log("Normal flashloan executed successfully");
+    }
 
-		console.log("Normal flashloan executed successfully");
-	}
+    function test_NormalExecution_ReceiverUsesLoan() public {
+        uint256 loanAmount = 500 ether;
+        uint256 receiverBefore = token.balanceOf(address(receiver));
 
+        console.log("Receiver requests loan of:", loanAmount / 1 ether, "tokens");
+        console.log("Receiver balance before: ", receiverBefore / 1 ether, "tokens");
 
-	function test_NormalExecution_ReceiverUsesLoan() public {
-		uint256 loanAmount = 500 ether;
-		uint256 receiverBefore = token.balanceOf(address(receiver));
+        pool.flashLoan(address(receiver), loanAmount);
 
-		console.log("Receiver requests loan of:", loanAmount / 1 ether, "tokens");
-        	console.log("Receiver balance before: ", receiverBefore / 1 ether, "tokens");
+        uint256 receiverAfter = token.balanceOf(address(receiver));
 
-		pool.flashLoan(address(receiver), loanAmount);
+        console.log("Receiver balance after:  ", receiverAfter / 1 ether, "tokens");
+        console.log("Fee paid:                ", FIXED_FEE / 1 ether, "token");
 
-		uint256 receiverAfter = token.balanceOf(address(receiver));
+        assertEq(receiverAfter, receiverBefore - FIXED_FEE);
 
-		console.log("Receiver balance after:  ", receiverAfter / 1 ether, "tokens");
-        	console.log("Fee paid:                ", FIXED_FEE / 1 ether, "token");
+        console.log("Receiver used", loanAmount / 1 ether, "tokens and only paid 1 token fee");
+    }
 
-		assertEq(receiverAfter, receiverBefore - FIXED_FEE);
-
-		console.log("Receiver used", loanAmount / 1 ether, "tokens and only paid 1 token fee");
-
-	}
-
-	function test_VulnerableExecution_AnyoneCanCallOnBehalfOfReceiver() public {
+    function test_VulnerableExecution_AnyoneCanCallOnBehalfOfReceiver() public {
         console.log("Scenario: Attacker calls flashLoan on behalf of receiver");
 
         uint256 receiverBefore = token.balanceOf(address(receiver));
