@@ -22,8 +22,7 @@ abstract contract Multicall {
 
 contract NaiveReceiverLenderPool is Multicall {
     ERC20Mint public immutable token;
-
-    uint256 private constant FIXED_FEE = 1 ether;
+    uint256 public constant FIXED_FEE = 1 ether;
 
     error RepayFailed();
 
@@ -39,6 +38,8 @@ contract NaiveReceiverLenderPool is Multicall {
         if (borrower.code.length > 0) {
             INaiveReceiverReceiver(borrower).onFlashLoan(msg.sender, address(token), amount, FIXED_FEE, "");
         }
+
+	token.transferFrom(borrower, address(this), amount + FIXED_FEE);
 
         if (token.balanceOf(address(this)) < balanceBefore + FIXED_FEE) {
             revert RepayFailed();
